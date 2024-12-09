@@ -1,0 +1,522 @@
+{
+    "fr": {
+        "tools": [
+            "Salon :",
+            "Par :",
+            "Faux",
+            "Vrai",
+            "Catégorie :",
+            "jour(s)",
+            "heure(s)",
+            "minute(s)",
+            "seconde(s)"
+        ],
+        "channelcreate": [
+            "Salon crée !"
+        ],
+        "channeldelete": [
+            "Salon supprimé !"
+        ],
+        "channelupdate": [
+            "Salon mise à jour !",
+            "Description mise à jour !"
+        ],
+        "pinsupdate": [
+            "Message épinglé crée !",
+            "Message épinglé supprimé !",
+            "Message :",
+            "Le :"
+        ],
+        "emojicreate": [
+            "Nouvel emoji crée !",
+            "L'émoji ",
+            " à été crée.",
+            "ID :"
+        ],
+        "emojidelete": [
+            "Emoji supprimé !",
+            "L'émoji ",
+            " à été supprimé.",
+            "ID :"
+        ],
+        "emojiupdate": [
+            "Emoji mise a jour !",
+            "ID :"
+        ],
+        "banadd": [
+            "Aucune raison spécifiée",
+            "Un membre a été banni !",
+            " a été banni.",
+            "Pour :"
+        ],
+        "banremove": [
+            "Un membre a été débanni !",
+            "a été débanni."
+        ],
+        "scheduledcreate": [
+            "Un événement a été crée !",
+            "Nom :",
+            "Description :",
+            "Dans :",
+            "Qui commence le :"
+        ],
+        "scheduleddelete": [
+            "Un événement a été supprimé !",
+            "Nom :",
+            "Description :"
+        ],
+        "scheduledupdate": [
+            "Un événement a été mise à jour !",
+            "Nom mise à jour :",
+            "Description mise à jour :",
+            "Date de commencement mise à jour :",
+            "Date de fin mise à jour :",
+            "Image de l'événement mise a jour.",
+            "Lieu de l'événement mise a jour :"
+        ],
+        "scheduleduseradd": [
+            "Un utilisateur est intéréssé par un événement !",
+            "Événement :",
+            "Utilisateur :"
+        ],
+        "scheduleduserremove": [
+            "Un utilisateur est déintéréssé par un événement !",
+            "Événement :",
+            "Utilisateur :"
+        ],
+        "invitecreate": [
+            "Une invitation a été crée !",
+            "Dans le salon :",
+            "Pendant :",
+            "Code d'invitation:",
+            "Temporaire ?"
+        ],
+        "invitedelete": [
+            "Une invitation a été supprimé !",
+            "Dans le salon :",
+            "Ancien code d'invitation:"
+        ],
+        "messageupdate": [
+            "Un message à été mise à jour !",
+            "Dans le salon :",
+            "Message modifié :"
+        ],
+        "messagedelete": [
+            "Un message à été supprimé !",
+            "Dans le salon :",
+            "Message supprimé :"
+        ],
+        "messagedeletebulk": [
+            "Plusieurs messages ont été supprimé !",
+            "Dans le salon :"
+        ],
+        "messagereactionuser": [
+            "Un utilisateur à réagis à un message !",
+            "Message :",
+            "Message crée par :",
+            "Réaction :"
+        ],
+        "messagereactionuserremove": [
+            "Un utilisateur à retiré sa réaction à un message !",
+            "Message :",
+            "Message crée par :",
+            "Réaction :"
+        ],
+        "messagereactionuserremoveall": [
+            "Un utilisateur à retiré toute les réactions à un message !",
+            "Message :",
+            "Message crée par :"
+        ],
+        "messagereactionusergroupremove": [
+            "Un utilisateur à retiré un groupe de réactions à un message !",
+            "Message :",
+            "Réaction supprimé du message :"
+        ],
+        "rolecreate": [
+            "Un utilisateur à crée un rôle !",
+            "Rôle :"
+        ],
+        "roledelete": [
+            "Un utilisateur à supprimé un rôle !",
+            "Ancien rôle :"
+        ],
+        "roleupdate": [
+            "Un utilisateur à mis à jour un rôle !",
+            "Nouveau nom :",
+            "Nouvelle couleur :"
+        ],
+        "stickercreate": [
+            "Un utilisateur à crée un sticker !",
+            "ID :",
+            "Nom :",
+            "Description :",
+            "Émoji similaire :"
+        ],
+        "stickerdelete": [
+            "Un utilisateur à supprimer un sticker !",
+            "Ancien ID :",
+            "Ancien nom :",
+            "Ancienne description :",
+            "Ancien émoji similaire :"
+        ],
+        "stickerupdate": [
+            "Un utilisateur à mis à jour un sticker !",
+            "Nouveau nom :",
+            "Nouvelle description :",
+            "Nouveau émoji similaire :"
+        ],
+        "threadcreate": [
+            "Un fil à été crée !",
+            "Nom du fil :"
+        ],
+        "threaddelete": [
+            "Un fil à été supprimé !",
+            "Nom du fil :"
+        ],
+        "threadupdate": [
+            "Un fil à été mise à jour !",
+            "Nom du fil actuel :",
+            "Nom du fil mise à jour :",
+            "Verrouilage du fil mise à jour :",
+            "Archivage du fil à jour :",
+            "Mode lent mise à jour :",
+            "Masquage après une période d'inactivité mise à jour :"
+        ],
+        "threadmembersupdate": [
+            "Un utilisateur à rejoint un fil !",
+            "Un utilisateur à quitter un fil !",
+            "Utilisateur :",
+            "Nom du fil :"
+        ],
+        "userupdate": [
+            "Un utilisateur à mis à jour son profil !",
+            "Utilisateur :",
+            "Nom d'utilisateur mise à jour :",
+            "Nom globale mise à jour :",
+            "Avatar mise à jour",
+            "Banniere mise à jour"
+        ],
+        "voicestateupdate": [
+            "Un utilisateur",
+            "à rejoint un vocal !",
+            "à quitter un vocal !",
+            "Utilisateur :",
+            "Salon vocal :",
+            "Auto-muet mise à jour :",
+            "Sourdine mise à jour :",
+            "Auto-muet serveur mise à jour :",
+            "Sourdine serveur mise à jour :",
+            "Partage d'écran mise à jour :"
+        ],
+        "guildupdate": [
+            "Le serveur a été mis à jour !",
+            "Nom du serveur mise à jour :",
+            "Icone du serveur mise à jour",
+            "Salon AFK mise à jour :",
+            "Durée max d'AFK mise à jour :",
+            "Barre de niveau de boost mise à jour :",
+            "Salon de message système mise à jour :",
+            "Paramètres de notification par défaut mise à jour :",
+            "Tous les messages",
+            "@mentions seulement",
+            "Banniere mise à jour :",
+            "Widget du serveur mise à jour :",
+            "Salon du widget du serveur mise à jour :",
+            "Niveau de vérification du serveur mise à jour :",
+            "Aucun",
+            "Faible",
+            "Moyen",
+            "Elevé",
+            "Maximum",
+            "Filtre d'images explicites mise à jour :",
+            "Ne pas filtrer",
+            "Filtrer les messages des membres du serveur sans rôles",
+            "Filtrer les messages de tous les membres",
+            "Salon d'alertes d'activité mise à jour :"
+        ],
+        "guildmemberupdate": [
+            "Un membre a été mise à jour !",
+            "Aucun",
+            "Ancien pseudo :",
+            "Nouveau pseudo :",
+            "Rôles ajoutés :",
+            "Rôles supprimés :"
+        ],
+        "guildunavailable": [
+            "Le serveur est indisponible du a une panne de serveur !"
+        ],
+        "guildmemberadd": [
+            "Un membre a rejoint le serveur !",
+            "Utilisateur :"
+        ],
+        "guildmemberremove": [
+            "Un membre a quitter le serveur !",
+            "Utilisateur :"
+        ],
+        "error": [
+            "Veuillez définir la langue (fr/en) en paramètre lors de l'appel de la fonction",
+            "Le salon de logs n'est pas configuré ou n'est pas accessible",
+            "La langue que vous définissez n'est pas prise en charge !"
+        ]
+    },
+    "en": {
+        "tools": [
+            "Channel:",
+            "By:",
+            "False",
+            "True",
+            "Category:",
+            "day(s)",
+            "hour(s)",
+            "minute(s)",
+            "second(s)"
+        ],
+        "channelcreate": [
+            "Channel created!"
+        ],
+        "channeldelete": [
+            "Channel deleted!"
+        ],
+        "channelupdate": [
+            "Channel updated!",
+            "Description updated!"
+        ],
+        "pinsupdate": [
+            "Pinned message created!",
+            "Pinned message deleted!",
+            "Message:",
+            "On:"
+        ],
+        "emojicreate": [
+            "New emoji created!",
+            "The emoji ",
+            " has been created.",
+            "ID:"
+        ],
+        "emojidelete": [
+            "Emoji deleted!",
+            "The emoji ",
+            " has been deleted.",
+            "ID:"
+        ],
+        "emojiupdate": [
+            "Emoji updated!",
+            "ID:"
+        ],
+        "banadd": [
+            "No reason specified",
+            "A member has been banned!",
+            " has been banned.",
+            "Reason:"
+        ],
+        "banremove": [
+            "A member has been unbanned!",
+            "has been unbanned."
+        ],
+        "scheduledcreate": [
+            "An event has been created!",
+            "Name:",
+            "Description:",
+            "In:",
+            "Starting on:"
+        ],
+        "scheduleddelete": [
+            "An event has been deleted!",
+            "Name:",
+            "Description:"
+        ],
+        "scheduledupdate": [
+            "An event has been updated!",
+            "Updated name:",
+            "Updated description:",
+            "Updated start date:",
+            "Updated end date:",
+            "Event image updated.",
+            "Event location updated:"
+        ],
+        "scheduleduseradd": [
+            "A user is interested in an event!",
+            "Event:",
+            "User:"
+        ],
+        "scheduleduserremove": [
+            "A user is no longer interested in an event!",
+            "Event:",
+            "User:"
+        ],
+        "invitecreate": [
+            "An invitation has been created!",
+            "In channel:",
+            "Duration:",
+            "Invitation code:",
+            "Temporary?"
+        ],
+        "invitedelete": [
+            "An invitation has been deleted!",
+            "In channel:",
+            "Old invitation code:"
+        ],
+        "messageupdate": [
+            "A message has been updated!",
+            "In channel:",
+            "Updated message:"
+        ],
+        "messagedelete": [
+            "A message has been deleted!",
+            "In channel:",
+            "Deleted message:"
+        ],
+        "messagedeletebulk": [
+            "Multiple messages have been deleted!",
+            "In channel:"
+        ],
+        "messagereactionuser": [
+            "A user reacted to a message!",
+            "Message:",
+            "Message created by:",
+            "Reaction:"
+        ],
+        "messagereactionuserremove": [
+            "A user removed their reaction from a message!",
+            "Message:",
+            "Message created by:",
+            "Reaction:"
+        ],
+        "messagereactionuserremoveall": [
+            "A user removed all reactions from a message!",
+            "Message:",
+            "Message created by:"
+        ],
+        "messagereactionusergroupremove": [
+            "A user removed a group of reactions from a message!",
+            "Message:",
+            "Reaction removed from the message:"
+        ],
+        "rolecreate": [
+            "A user created a role!",
+            "Role:"
+        ],
+        "roledelete": [
+            "A user deleted a role!",
+            "Old role:"
+        ],
+        "roleupdate": [
+            "A user updated a role!",
+            "New name:",
+            "New color:"
+        ],
+        "stickercreate": [
+            "A user created a sticker!",
+            "ID:",
+            "Name:",
+            "Description:",
+            "Similar emoji:"
+        ],
+        "stickerdelete": [
+            "A user deleted a sticker!",
+            "Old ID:",
+            "Old name:",
+            "Old description:",
+            "Old similar emoji:"
+        ],
+        "stickerupdate": [
+            "A user updated a sticker!",
+            "New name:",
+            "New description:",
+            "New similar emoji:"
+        ],
+        "threadcreate": [
+            "A thread has been created!",
+            "Thread name:"
+        ],
+        "threaddelete": [
+            "A thread has been deleted!",
+            "Thread name:"
+        ],
+        "threadupdate": [
+            "A thread has been updated!",
+            "Current thread name:",
+            "Updated thread name:",
+            "Updated thread lock status:",
+            "Updated thread archive status:",
+            "Updated slow mode:",
+            "Updated inactivity hiding status:"
+        ],
+        "threadmembersupdate": [
+            "A user joined a thread!",
+            "A user left a thread!",
+            "User:",
+            "Thread name:"
+        ],
+        "userupdate": [
+            "A user updated their profile!",
+            "User:",
+            "Updated username:",
+            "Updated global name:",
+            "Updated avatar",
+            "Updated banner"
+        ],
+        "voicestateupdate": [
+            "A user",
+            "joined a voice channel!",
+            "left a voice channel!",
+            "User:",
+            "Voice channel:",
+            "Updated self-mute:",
+            "Updated self-deafen:",
+            "Updated server-mute:",
+            "Updated server-deafen:",
+            "Updated screen share:"
+        ],
+        "guildupdate": [
+            "The server has been updated!",
+            "Updated server name:",
+            "Updated server icon",
+            "Updated AFK channel:",
+            "Updated AFK timeout duration:",
+            "Updated boost level bar:",
+            "Updated system message channel:",
+            "Updated default notification settings:",
+            "All messages",
+            "@mentions only",
+            "Updated banner:",
+            "Updated server widget:",
+            "Updated server widget channel:",
+            "Updated server verification level:",
+            "None",
+            "Low",
+            "Medium",
+            "High",
+            "Maximum",
+            "Updated explicit image filter:",
+            "Do not filter",
+            "Filter messages from members without roles",
+            "Filter messages from all members",
+            "Updated activity alert channel:"
+        ],
+        "guildmemberupdate": [
+            "A member has been updated!",
+            "None",
+            "Old nickname:",
+            "New nickname:",
+            "Roles added:",
+            "Roles removed:"
+        ],
+        "guildunavailable": [
+            "The server is unavailable due to a server outage!"
+        ],
+        "guildmemberadd": [
+            "A member joined the server!",
+            "User:"
+        ],
+        "guildmemberremove": [
+            "A member left the server!",
+            "User:"
+        ],
+        "error": [
+            "Please define the language (fr/en) as a parameter when calling the function",
+            "The log channel is not configured or not accessible",
+            "The language you defined is not supported!"
+        ]
+    }
+}
