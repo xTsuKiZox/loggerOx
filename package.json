@@ -15,7 +15,7 @@
   "license": "MIT",
   "files": [
     "src",
-    "README.md"
+    "README.npm.md"
   ],
   "repository": {
     "type": "git",

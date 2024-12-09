@@ -1,3 +1,4 @@
 node_modules
 admin
-README.md
+.env
+README.npm.md
