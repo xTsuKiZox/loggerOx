@@ -107,4 +107,12 @@ Warning: please avoid spamming, be rational and understanding 😊.
 
 <br>
 
-### Thank you for using LoggerOx
+# Links
+
+npm : https://www.npmjs.com/package/loggerox?activeTab=readme
+
+Github : https://github.com/xTsuKiZox/loggerOx
+
+<br>
+
+### Thank you for using LoggerOx !

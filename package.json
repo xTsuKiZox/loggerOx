@@ -7,7 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tsukizo",
-  "license": "ISC",
+  "license": "MIT",
+  "files": [
+    "README.md"
+  ],
   "dependencies": {
     "discord.js": "^14.16.3"
   }
