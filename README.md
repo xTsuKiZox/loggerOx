@@ -96,7 +96,7 @@ changeColor()
 <br>  
 
 # Support and Feedback
-If you encounter any issues or have suggestions for improvement for LoggerOx, feel free to create an issue!
+If you encounter any issues or have suggestions for improvement for LoggerOx, feel free to create an pull requests !
 
 <br>
 
