@@ -2,17 +2,26 @@
   "name": "loggerox",
   "version": "1.0.6",
   "description": "NPM Package for Discord server events with loggerOx",
-  "main": "./src/loggerOxIndex.js",
+  "main": "/src/loggerOxIndex.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "discord",
+    "logs",
+    "bot"
+  ],
   "author": "tsukizo",
   "license": "MIT",
   "files": [
-    "README.md",
     "src",
-    "github"
+    "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xTsuKiZox/loggerOx",
+    "directory": "packages/loggerox"
+  },
   "dependencies": {
     "discord.js": "^14.16.3"
   }
