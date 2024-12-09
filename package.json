@@ -1,6 +1,6 @@
 {
   "name": "loggerox",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "NPM Package for Discord server events with loggerOx",
   "main": "/src/loggerOxIndex.js",
   "scripts": {
