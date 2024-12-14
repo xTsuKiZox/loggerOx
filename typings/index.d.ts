@@ -1,4 +1,4 @@
-declare module "loggerOx" {
+declare module "loggerox" {
   /**
    * Function to initialize configuration for LoggerOx
    * @param {string} idChannelLog The ID of the channel to log events.
