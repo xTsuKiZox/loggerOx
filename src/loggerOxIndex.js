@@ -13,7 +13,7 @@ const path = require("path");
 //#region INIT
 /**
  * Function to initialize configuration for LoggerOx
- * @param {string} idChannelLog Log channel ID
+ * @param {string} idChannelLog The ID of the channel to log events.
  */
 function initLoggerOx(idChannelLog) {
     if (!idChannelLog) {
@@ -84,7 +84,7 @@ function isValidHexColor(color) {
 /**
  * Function to change embed color depending on event type
  * @param {string} type Type of event | Add (green) / Update (orange) / Delete (red)
- * @param {string} color Color in HEX
+ * @param {string} color Color in HEX format.
  */
 function changeColor(type, color) {
     if (!type || !color) {
@@ -124,7 +124,7 @@ function changeColor(type, color) {
         try {
             const existingConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
 
-            configData.message = existingConfig.message || {}; 
+            configData.message = existingConfig.message || {};
             configData.color = {
                 ...existingConfig.color,
                 ...colors,
@@ -138,7 +138,7 @@ function changeColor(type, color) {
         }
     } else {
         configData.message = {
-            idChannelLog: "",  
+            idChannelLog: "",
         };
     }
 
@@ -446,9 +446,9 @@ function getChannelDelete(client, lang, options) {
 //#region CHANNELUPDATE
 /**
  * Event when a channel is updated
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
- * @param {options} boolean No more options. True: Yes / False: No
+ * @param {boolean} options No more options. True: Yes / False: No
 */
 function getChannelUpdate(client, lang, options) {
     try {
@@ -681,7 +681,7 @@ function getDebug(client, active) {
 //#region EMOJICREATE
 /**
  * Event when an emoji is created
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getEmojiCreate(client, lang) {
@@ -734,7 +734,7 @@ function getEmojiCreate(client, lang) {
 //#region EMOJIDELETE
 /**
  * Event when an emoji is deleted
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getEmojiDelete(client, lang) {
@@ -788,7 +788,7 @@ function getEmojiDelete(client, lang) {
 //#region EMOJIUPDATE
 /**
  * Event when an emoji is updated
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 async function getEmojiUpdate(client, lang) {
@@ -840,7 +840,7 @@ async function getEmojiUpdate(client, lang) {
 //#region BANADD
 /**
  * Event when there is a ban
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getBanAdd(client, lang) {
@@ -895,7 +895,7 @@ function getBanAdd(client, lang) {
 //#region BANREMOVE
 /**
  *Event when there is a ban removed
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getBanRemove(client, lang) {
@@ -947,7 +947,7 @@ function getBanRemove(client, lang) {
 //#region SCHEDULEDCREATE
 /**
  * Event when it is the creation of an event
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getScheduledCreate(client, lang) {
@@ -1007,7 +1007,7 @@ function getScheduledCreate(client, lang) {
 //#region SCHEDULEDDELETE
 /**
  * Event when it is the delete of an event
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getScheduledDelete(client, lang) {
@@ -1064,7 +1064,7 @@ function getScheduledDelete(client, lang) {
 //#region SCHEDULEDUPDATE
 /**
  * Event when it is the update of an event
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getScheduledUpdate(client, lang) {
@@ -1156,7 +1156,7 @@ function getScheduledUpdate(client, lang) {
 //#region SCHEDULEDUSERADD
 /**
  * Event when a user subscribes to an event
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getScheduledUserAdd(client, lang) {
@@ -1202,7 +1202,7 @@ function getScheduledUserAdd(client, lang) {
 //#region SCHEDULEDUSERREMOVE
 /**
  * Event when a user remove subscribes to an event
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getScheduledUserRemove(client, lang) {
@@ -1246,7 +1246,7 @@ function getScheduledUserRemove(client, lang) {
 //#region GUILDUPDATE
 /**
  * Event when a guild update
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getGuildUpdate(client, lang) {
@@ -1340,7 +1340,7 @@ function getGuildUpdate(client, lang) {
 //#region GUILDMEMBERUPDATE
 /**
  * Event when a member undergoes a change
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getGuildMemberUpdate(client, lang) {
@@ -1420,7 +1420,7 @@ function getGuildMemberUpdate(client, lang) {
 //#region GUILDUNAVAILABLE
 /**
  * Event when the server becomes unavailable, probably due to a server outage.
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getGuildUnavailable(client, lang) {
@@ -1460,7 +1460,7 @@ function getGuildUnavailable(client, lang) {
 //#region GUILDMEMBERADD
 /**
  * Event when a user joins the server.
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getGuildMemberAdd(client, lang) {
@@ -1505,7 +1505,7 @@ function getGuildMemberAdd(client, lang) {
 //#region GUILDMEMBERDELETE
 /**
  * Event when a user leaves the server.
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getGuildMemberRemove(client, lang) {
@@ -1550,7 +1550,7 @@ function getGuildMemberRemove(client, lang) {
 //#region INVITECREATE
 /**
  * Event when a user creates an invitation
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getInviteCreate(client, lang) {
@@ -1611,7 +1611,7 @@ function getInviteCreate(client, lang) {
 //#region INVITEDELETE
 /**
  * Event when a user delete an invitation
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getInviteDelete(client, lang) {
@@ -1664,7 +1664,7 @@ function getInviteDelete(client, lang) {
 //#region MESSAGEUPDATE
 /**
  * Event when a user update an message
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getMessageUpdate(client, lang) {
@@ -1716,7 +1716,7 @@ function getMessageUpdate(client, lang) {
 //#region MESSAGEDELETE
 /**
  * Event when a user delete an message
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getMessageDelete(client, lang) {
@@ -1770,7 +1770,7 @@ function getMessageDelete(client, lang) {
 //#region MESSAGEDELETEBULK
 /**
  * Event when a user deletes messages in bulk
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getMessageDeleteBulk(client, lang) {
@@ -1823,7 +1823,7 @@ function getMessageDeleteBulk(client, lang) {
 //#region MESSAGEREACTIONUSER
 /**
  * Event when a user adds a reaction to a message
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getMessageReactionUser(client, lang) {
@@ -1867,7 +1867,7 @@ function getMessageReactionUser(client, lang) {
 //#region MESSAGEREACTIONUSERREMOVE
 /**
  * Event when a user removed a reaction to a message
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getMessageReactionUserRemove(client, lang) {
@@ -1911,7 +1911,7 @@ function getMessageReactionUserRemove(client, lang) {
 //#region MESSAGEREACTIONUSERREMOVEALL
 /**
  * Event when a user removed all reaction to a message
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getMessageReactionUserRemoveAll(client, lang) {
@@ -1955,7 +1955,7 @@ function getMessageReactionUserRemoveAll(client, lang) {
 //#region MESSAGEREACTIONUSERGROUPREMOVE
 /**
  * Event when a user deletes an explicitly deleted emoji from a message
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getMessageReactionUserGroupRemove(client, lang) {
@@ -1997,7 +1997,7 @@ function getMessageReactionUserGroupRemove(client, lang) {
 //#region ROLECREATE
 /**
  * Event when a user creates a role
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getRoleCreate(client, lang) {
@@ -2050,7 +2050,7 @@ function getRoleCreate(client, lang) {
 //#region ROLEDELETE
 /**
  * Event when a user delete a role
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getRoleDelete(client, lang) {
@@ -2103,7 +2103,7 @@ function getRoleDelete(client, lang) {
 //#region ROLEUPDATE
 /**
  * Event when a user update a role
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getRoleUpdate(client, lang) {
@@ -2168,7 +2168,7 @@ function getRoleUpdate(client, lang) {
 //#region STICKERCREATE
 /**
  * Event when a user creates a sticker
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getStickerCreate(client, lang) {
@@ -2222,7 +2222,7 @@ function getStickerCreate(client, lang) {
 //#region STICKERDELETE
 /**
  * Event when a user delete a sticker
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getStickerDelete(client, lang) {
@@ -2276,7 +2276,7 @@ function getStickerDelete(client, lang) {
 //#region STICKERUPDATE
 /**
  * Event when a user update a sticker
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getStickerUpdate(client, lang) {
@@ -2347,7 +2347,7 @@ function getStickerUpdate(client, lang) {
 //#region THREADCREATE
 /**
  * Event when a user create a thread
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getThreadCreate(client, lang) {
@@ -2399,7 +2399,7 @@ function getThreadCreate(client, lang) {
 //#region THREADDELETE
 /**
  * Event when a user delete a thread
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getThreadDelete(client, lang) {
@@ -2451,7 +2451,7 @@ function getThreadDelete(client, lang) {
 //#region THREADUPDATE
 /**
  * Event when a user update a thread
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getThreadUpdate(client, lang) {
@@ -2524,7 +2524,7 @@ function getThreadUpdate(client, lang) {
 //#region THREADMEMBESUPDATE
 /**
  * Event when a user is added or removed from a thread.
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getThreadMembersUpdate(client, lang) {
@@ -2594,7 +2594,7 @@ function getThreadMembersUpdate(client, lang) {
 //#region USERUPDATE
 /**
  * Event when a user update a profile
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getUserUpdate(client, lang) {
@@ -2658,7 +2658,7 @@ function getUserUpdate(client, lang) {
 //#region VOICESTATEUPDATE
 /**
  * Event when a user update in vocal
- * @param {client} object Client Recover from Discord
+ * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
 */
 function getVoiceStateUpdate(client, lang) {
