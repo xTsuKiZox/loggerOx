@@ -15,7 +15,8 @@
   "license": "MIT",
   "files": [
     "src",
-    "README.npm.md"
+    "README.npm.md",
+    "typings"
   ],
   "types": "./typings/index.d.ts",
   "repository": {
