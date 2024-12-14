@@ -954,7 +954,7 @@ function getScheduledCreate(client, lang) {
     try {
         if (verifyConfig()) {
             let serverConfig = verifyConfig()
-            if (langLO[lang] && langLO[lang].sheduledcreate) {
+            if (langLO[lang] && langLO[lang].scheduledcreate) {
                 client.on("guildScheduledEventCreate", async (guildScheduledEvent) => {
                     const auditLogs = await guildScheduledEvent.guild.fetchAuditLogs({
                         type: AuditLogEvent.GuildScheduledEventCreate,
