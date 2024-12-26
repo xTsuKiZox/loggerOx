@@ -470,7 +470,7 @@ function getChannelUpdate(client, lang, options) {
                                 const embed = new EmbedBuilder()
                                     .setTitle(langLO[lang].channelupdate[0])
                                     .setColor(serverConfig.color.warning)
-                                    .setDescription(`**${oldChannel.name}** → **${newChannel.name}**`)
+                                    .setDescription(`**${oldChannel.name}** ➡️ **${newChannel.name}**`)
                                     .setThumbnail(user.avatarURL())
                                     .setAuthor({ name: newChannel.guild.name, iconURL: await verifImgIcon(newChannel.guild.id, newChannel.guild.icon) })
                                     .addFields(
@@ -517,7 +517,7 @@ function getChannelUpdate(client, lang, options) {
                                 const embed = new EmbedBuilder()
                                     .setTitle(langLO[lang].channelupdate[1])
                                     .setColor(serverConfig.color.warning)
-                                    .setDescription(`**${oldChannel.topic}** → **${newChannel.topic}**`)
+                                    .setDescription(`**${oldChannel.topic}** ➡️ **${newChannel.topic}**`)
                                     .setThumbnail(user.avatarURL())
                                     .setAuthor({ name: newChannel.guild.name, iconURL: await verifImgIcon(newChannel.guild.id, newChannel.guild.icon) })
                                     .addFields(
@@ -591,13 +591,14 @@ function getPinsUpdate(client, lang, options) {
                     const logEntry = auditLogs.entries.first();
                     if (logEntry) {
                         const user = logEntry.executor;
-                        let title
-                        let colorForEmbed
+                        let title, colorForEmbed, notTimeBecauseIsDelete
 
                         if (time != null) {
+                            notTimeBecauseIsDelete = false
                             title = langLO[lang].pinsupdate[0]
                             colorForEmbed = serverConfig.color.success
                         } else {
+                            notTimeBecauseIsDelete = true
                             title = langLO[lang].pinsupdate[1]
                             colorForEmbed = serverConfig.color.error
                         }
@@ -608,11 +609,15 @@ function getPinsUpdate(client, lang, options) {
                             .setThumbnail(user.avatarURL())
                             .setAuthor({ name: channel.guild.name, iconURL: await verifImgIcon(channel.guild.id, channel.guild.icon) })
                             .addFields(
-                                { name: langLO[lang].pinsupdate[2], value: `<#${channel.id}>`, inline: true },
-                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true }
+                                { name: langLO[lang].pinsupdate[2], value: `<#${channel.id}>`, inline: true }
                             )
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
+
+                        if (notTimeBecauseIsDelete === false) {
+                            embed.addFields(
+                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true })
+                        }
 
                         if (options === true) {
                             if (channel.nsfw === false) {
@@ -808,7 +813,7 @@ async function getEmojiUpdate(client, lang) {
                         const embed = new EmbedBuilder()
                             .setTitle(langLO[lang].emojiupdate[0])
                             .setColor(serverConfig.color.warning)
-                            .setDescription(`**${oldEmoji.name}** → **${newEmoji.name}**`)
+                            .setDescription(`**${oldEmoji.name}** ➡️ **${newEmoji.name}**`)
                             .setThumbnail(`https://cdn.discordapp.com/emojis/${newEmoji.id}.png`)
                             .setAuthor({ name: newEmoji.guild.name, iconURL: await verifImgIcon(newEmoji.guild.id, newEmoji.guild.icon) })
                             .addFields(
@@ -1096,28 +1101,28 @@ function getScheduledUpdate(client, lang) {
                         if (oldGuildScheduledEvent.name != newGuildScheduledEvent.name) {
                             embed.addFields({
                                 name: langLO[lang].scheduledupdate[1],
-                                value: `**${oldGuildScheduledEvent.name}** → **${newGuildScheduledEvent.name}**`
+                                value: `**${oldGuildScheduledEvent.name}** ➡️ **${newGuildScheduledEvent.name}**`
                             })
                         }
 
                         if (oldGuildScheduledEvent.description != newGuildScheduledEvent.description) {
                             embed.addFields({
                                 name: langLO[lang].scheduledupdate[2],
-                                value: `**${oldGuildScheduledEvent.description}** → **${newGuildScheduledEvent.description}**`
+                                value: `**${oldGuildScheduledEvent.description}** ➡️ **${newGuildScheduledEvent.description}**`
                             })
                         }
 
                         if (oldGuildScheduledEvent.scheduledStartTimestamp != newGuildScheduledEvent.scheduledStartTimestamp) {
                             embed.addFields({
                                 name: langLO[lang].scheduledupdate[3],
-                                value: `**${new Date(oldGuildScheduledEvent.scheduledStartTimestamp).toLocaleString()}** → **${new Date(newGuildScheduledEvent.scheduledStartTimestamp).toLocaleString()}**`
+                                value: `**${new Date(oldGuildScheduledEvent.scheduledStartTimestamp).toLocaleString()}** ➡️ **${new Date(newGuildScheduledEvent.scheduledStartTimestamp).toLocaleString()}**`
                             })
                         }
 
                         if (oldGuildScheduledEvent.scheduledEndTimestamp != newGuildScheduledEvent.scheduledEndTimestamp) {
                             embed.addFields({
                                 name: langLO[lang].scheduledupdate[4],
-                                value: `**${new Date(oldGuildScheduledEvent.scheduledEndTimestamp).toLocaleString()}** → **${new Date(newGuildScheduledEvent.scheduledEndTimestamp).toLocaleString()}**`
+                                value: `**${new Date(oldGuildScheduledEvent.scheduledEndTimestamp).toLocaleString()}** ➡️ **${new Date(newGuildScheduledEvent.scheduledEndTimestamp).toLocaleString()}**`
                             })
                         }
 
@@ -1129,7 +1134,7 @@ function getScheduledUpdate(client, lang) {
                         if (oldGuildScheduledEvent.entityMetadata.location != newGuildScheduledEvent.entityMetadata.location) {
                             embed.addFields({
                                 name: langLO[lang].scheduledupdate[6],
-                                value: `**${oldGuildScheduledEvent.entityMetadata.location}** → **${newGuildScheduledEvent.entityMetadata.location}**`
+                                value: `**${oldGuildScheduledEvent.entityMetadata.location}** ➡️ **${newGuildScheduledEvent.entityMetadata.location}**`
                             })
                         }
 
@@ -1267,7 +1272,7 @@ function getGuildUpdate(client, lang) {
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
                     if (oldGuild.name != newGuild.name) {
-                        embed.addFields({ name: langLO[lang].guildupdate[1], value: `**${oldGuild.name}** → **${newGuild.name}**` })
+                        embed.addFields({ name: langLO[lang].guildupdate[1], value: `**${oldGuild.name}** ➡️ **${newGuild.name}**` })
                     }
                     if (oldGuild.icon != newGuild.icon) {
                         descriptionParts.push(langLO[lang].guildupdate[2]);
@@ -1359,9 +1364,10 @@ function getGuildMemberUpdate(client, lang) {
 
                         const embed = new EmbedBuilder()
                             .setTitle(langLO[lang].guildmemberupdate[0])
-                            .setThumbnail(await verifImgAvatar(newMember.user.id, newMember.user.avatar))
+                            .setThumbnail(await verifImgAvatar(user.id, user.avatar))
                             .setAuthor({ name: newMember.guild.name, iconURL: await verifImgIcon(newMember.guild.id, newMember.guild.icon) })
                             .addFields(
+                                { name: langLO[lang].guildmemberupdate[6], value: `<@${oldMember.id}>`, inline: false },
                                 { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false }
                             )
                             .setTimestamp()
@@ -1690,7 +1696,7 @@ function getMessageUpdate(client, lang) {
                     if (oldMessage.content !== newMessage.content) {
                         embed.addFields({
                             name: langLO[lang].messageupdate[2],
-                            value: `**${oldMessage.content}** → **${newMessage.content}**`
+                            value: `**${oldMessage.content}** ➡️ **${newMessage.content}**`
                         })
                     }
 
@@ -1736,10 +1742,8 @@ function getMessageDelete(client, lang) {
                         const embed = new EmbedBuilder()
                             .setTitle(langLO[lang].messagedelete[0])
                             .setColor(serverConfig.color.error)
-                            .setThumbnail(user.avatarURL())
                             .setAuthor({ name: message.guild.name, iconURL: await verifImgIcon(message.guild.id, message.guild.icon) })
                             .addFields(
-                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false },
                                 { name: langLO[lang].messagedelete[1], value: `<#${message.channelId}>`, inline: false },
                                 { name: langLO[lang].messagedelete[2], value: `\`${message.content}\``, inline: false },
                             )
@@ -2134,14 +2138,14 @@ function getRoleUpdate(client, lang) {
                         if (oldRole.name !== newRole.name) {
                             embed.addFields({
                                 name: langLO[lang].roleupdate[1],
-                                value: `**${oldRole.name}** → **${newRole.name}**`
+                                value: `**${oldRole.name}** ➡️ **${newRole.name}**`
                             })
                         }
 
                         if (oldRole.color !== newRole.color) {
                             embed.addFields({
                                 name: langLO[lang].roleupdate[2],
-                                value: `**${oldRole.color}** → **${newRole.color}**`
+                                value: `**${oldRole.color}** ➡️ **${newRole.color}**`
                             })
                         }
 
@@ -2306,21 +2310,21 @@ function getStickerUpdate(client, lang) {
                         if (oldSticker.name != newSticker.name) {
                             embed.addFields({
                                 name: langLO[lang].stickerupdate[1],
-                                value: `**${oldSticker.name}** → **${newSticker.name}**`
+                                value: `**${oldSticker.name}** ➡️ **${newSticker.name}**`
                             })
                         }
 
                         if (oldSticker.description != newSticker.description) {
                             embed.addFields({
                                 name: langLO[lang].stickerupdate[2],
-                                value: `**${oldSticker.description}** → **${newSticker.description}**`
+                                value: `**${oldSticker.description}** ➡️ **${newSticker.description}**`
                             })
                         }
 
                         if (oldSticker.tags != newSticker.tags) {
                             embed.addFields({
                                 name: langLO[lang].stickerupdate[3],
-                                value: `**${oldSticker.tags}** → **${newSticker.tags}**`
+                                value: `**${oldSticker.tags}** ➡️ **${newSticker.tags}**`
                             })
                         }
 
@@ -2481,7 +2485,7 @@ function getThreadUpdate(client, lang) {
 
 
                         if (oldThread.name !== newThread.name) {
-                            embed.addFields({ name: langLO[lang].threadupdate[2], value: `**${oldThread.name}** → **${newThread.name}**` })
+                            embed.addFields({ name: langLO[lang].threadupdate[2], value: `**${oldThread.name}** ➡️ **${newThread.name}**` })
                         }
                         if (oldThread.locked !== newThread.locked) {
                             let valeurVerouillage
@@ -2616,10 +2620,10 @@ function getUserUpdate(client, lang) {
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
                     if (oldUser.username != newUser.username) {
-                        embed.addFields({ name: langLO[lang].userupdate[2], value: `**${oldUser.username}** → **${newUser.username}**` })
+                        embed.addFields({ name: langLO[lang].userupdate[2], value: `**${oldUser.username}** ➡️ **${newUser.username}**` })
                     }
                     if (oldUser.globalName != newUser.globalName) {
-                        embed.addFields({ name: langLO[lang].userupdate[3], value: `**${oldUser.globalName}** → **${newUser.globalName}**` })
+                        embed.addFields({ name: langLO[lang].userupdate[3], value: `**${oldUser.globalName}** ➡️ **${newUser.globalName}**` })
                     }
                     if (oldUser.avatar != newUser.avatar) {
                         descriptionParts.push(langLO[lang].userupdate[4]);
