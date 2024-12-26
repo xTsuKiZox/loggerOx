@@ -240,7 +240,8 @@
             "Ancien pseudo :",
             "Nouveau pseudo :",
             "Rôles ajoutés :",
-            "Rôles supprimés :"
+            "Rôles supprimés :",
+            "Le membre :"
         ],
         "guildunavailable": [
             "Le serveur est indisponible du a une panne de serveur !"
@@ -500,7 +501,8 @@
             "Old nickname:",
             "New nickname:",
             "Roles added:",
-            "Roles removed:"
+            "Roles removed:",
+            "The member:"
         ],
         "guildunavailable": [
             "The server is unavailable due to a server outage!"
