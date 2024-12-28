@@ -9,7 +9,9 @@
   "keywords": [
     "discord",
     "logs",
-    "bot"
+    "bot",
+    "events",
+    "logger"
   ],
   "author": "tsukizo",
   "license": "MIT",

@@ -448,9 +448,10 @@ function getChannelDelete(client, lang, options) {
  * Event when a channel is updated
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
- * @param {boolean} options No more options. True: Yes / False: No
+ * @param {boolean} options No more options. True: true / False: false
+ * @param {options} bot Have events created by bots. True: true / False: false
 */
-function getChannelUpdate(client, lang, options) {
+function getChannelUpdate(client, lang, options, bot) {
     try {
         if (verifyConfig()) {
             let serverConfig = verifyConfig()
@@ -464,98 +465,102 @@ function getChannelUpdate(client, lang, options) {
                     const logEntry = auditLogs.entries.first();
                     if (logEntry) {
                         const user = logEntry.executor;
+                        if (user.bot === true && bot === false) {
+                            return
+                        }
+                        else if (!bot || bot === true) {
+                            if (oldChannel.name != newChannel.name) {
+                                try {
+                                    const embed = new EmbedBuilder()
+                                        .setTitle(langLO[lang].channelupdate[0])
+                                        .setColor(serverConfig.color.warning)
+                                        .setDescription(`**${oldChannel.name}** ➡️ **${newChannel.name}**`)
+                                        .setThumbnail(user.avatarURL())
+                                        .setAuthor({ name: newChannel.guild.name, iconURL: await verifImgIcon(newChannel.guild.id, newChannel.guild.icon) })
+                                        .addFields(
+                                            { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true }
+                                        )
+                                        .setTimestamp()
+                                        .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (oldChannel.name != newChannel.name) {
-                            try {
-                                const embed = new EmbedBuilder()
-                                    .setTitle(langLO[lang].channelupdate[0])
-                                    .setColor(serverConfig.color.warning)
-                                    .setDescription(`**${oldChannel.name}** ➡️ **${newChannel.name}**`)
-                                    .setThumbnail(user.avatarURL())
-                                    .setAuthor({ name: newChannel.guild.name, iconURL: await verifImgIcon(newChannel.guild.id, newChannel.guild.icon) })
-                                    .addFields(
-                                        { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true }
-                                    )
-                                    .setTimestamp()
-                                    .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
-
-                                if (options === true) {
-                                    if (channel.nsfw === false) {
-                                        forNsfw = langLO[lang].tools[2]
-                                    } else if (channel.nsfw === true) {
-                                        forNsfw = langLO[lang].tools[3]
-                                    }
-                                    embed.addFields(
-                                        {
-                                            name: "NSFW ?",
-                                            value: forNsfw,
-                                            inline: true
+                                    if (options === true) {
+                                        if (channel.nsfw === false) {
+                                            forNsfw = langLO[lang].tools[2]
+                                        } else if (channel.nsfw === true) {
+                                            forNsfw = langLO[lang].tools[3]
                                         }
-                                        ,
-                                        {
-                                            name: langLO[lang].tools[4],
-                                            value: `<#${newChannel.parentId}>`,
-                                            inline: true
-                                        }
-                                    )
-                                }
-
-                                if (serverConfig.message.idChannelLog) {
-                                    try {
-                                        newChannel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                    } catch (error) {
-                                        console.error(langLO[lang].error[1]);
+                                        embed.addFields(
+                                            {
+                                                name: "NSFW ?",
+                                                value: forNsfw,
+                                                inline: true
+                                            }
+                                            ,
+                                            {
+                                                name: langLO[lang].tools[4],
+                                                value: `<#${newChannel.parentId}>`,
+                                                inline: true
+                                            }
+                                        )
                                     }
-                                }
-                            } catch (error) {
-                                console.log("Error changing channel name, not topic: ", error)
-                            }
-                        } else if (oldChannel.topic != newChannel.topic) {
-                            try {
-                                if (oldChannel.topic === "") { return oldChannel.topic = " " }
-                                if (newChannel.topic === "") { return newChannel.topic = " " }
-                                const embed = new EmbedBuilder()
-                                    .setTitle(langLO[lang].channelupdate[1])
-                                    .setColor(serverConfig.color.warning)
-                                    .setDescription(`**${oldChannel.topic}** ➡️ **${newChannel.topic}**`)
-                                    .setThumbnail(user.avatarURL())
-                                    .setAuthor({ name: newChannel.guild.name, iconURL: await verifImgIcon(newChannel.guild.id, newChannel.guild.icon) })
-                                    .addFields(
-                                        { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true }
-                                    )
-                                    .setTimestamp()
-                                    .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                                if (options === true) {
-                                    if (newChannel.nsfw === false) {
-                                        forNsfw = langLO[lang].tools[2]
-                                    } else if (newChannel.nsfw === true) {
-                                        forNsfw = langLO[lang].tools[3]
+                                    if (serverConfig.message.idChannelLog) {
+                                        try {
+                                            newChannel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                        } catch (error) {
+                                            console.error(langLO[lang].error[1]);
+                                        }
                                     }
-                                    embed.addFields(
-                                        {
-                                            name: "NSFW ?",
-                                            value: forNsfw,
-                                            inline: true
-                                        }
-                                        ,
-                                        {
-                                            name: langLO[lang].tools[4],
-                                            value: `<#${newChannel.parentId}>`,
-                                            inline: true
-                                        }
-                                    )
+                                } catch (error) {
+                                    console.log("Error changing channel name, not topic: ", error)
                                 }
+                            } else if (oldChannel.topic != newChannel.topic) {
+                                try {
+                                    if (oldChannel.topic === "") { return oldChannel.topic = " " }
+                                    if (newChannel.topic === "") { return newChannel.topic = " " }
+                                    const embed = new EmbedBuilder()
+                                        .setTitle(langLO[lang].channelupdate[1])
+                                        .setColor(serverConfig.color.warning)
+                                        .setDescription(`**${oldChannel.topic}** ➡️ **${newChannel.topic}**`)
+                                        .setThumbnail(user.avatarURL())
+                                        .setAuthor({ name: newChannel.guild.name, iconURL: await verifImgIcon(newChannel.guild.id, newChannel.guild.icon) })
+                                        .addFields(
+                                            { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true }
+                                        )
+                                        .setTimestamp()
+                                        .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                                if (serverConfig.message.idChannelLog) {
-                                    try {
-                                        newChannel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                    } catch (error) {
-                                        console.error(langLO[lang].error[1]);
+                                    if (options === true) {
+                                        if (newChannel.nsfw === false) {
+                                            forNsfw = langLO[lang].tools[2]
+                                        } else if (newChannel.nsfw === true) {
+                                            forNsfw = langLO[lang].tools[3]
+                                        }
+                                        embed.addFields(
+                                            {
+                                                name: "NSFW ?",
+                                                value: forNsfw,
+                                                inline: true
+                                            }
+                                            ,
+                                            {
+                                                name: langLO[lang].tools[4],
+                                                value: `<#${newChannel.parentId}>`,
+                                                inline: true
+                                            }
+                                        )
                                     }
+
+                                    if (serverConfig.message.idChannelLog) {
+                                        try {
+                                            newChannel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                        } catch (error) {
+                                            console.error(langLO[lang].error[1]);
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.log("Error changing topic: ", error)
                                 }
-                            } catch (error) {
-                                console.log("Error changing topic: ", error)
                             }
                         }
                     }
@@ -576,8 +581,9 @@ function getChannelUpdate(client, lang, options) {
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
  * @param {boolean} options No more options. True: Yes / False: No
+ * @param {options} bot Have events created by bots. True: true / False: false
 */
-function getPinsUpdate(client, lang, options) {
+function getPinsUpdate(client, lang, options, bot) {
     try {
         if (verifyConfig()) {
             let serverConfig = verifyConfig()
@@ -591,65 +597,69 @@ function getPinsUpdate(client, lang, options) {
                     const logEntry = auditLogs.entries.first();
                     if (logEntry) {
                         const user = logEntry.executor;
-                        let title, colorForEmbed, notTimeBecauseIsDelete
+                        if (user.bot === true && bot === false) {
+                            return
+                        } else if (!bot || bot === true) {
+                            let title, colorForEmbed, notTimeBecauseIsDelete
 
-                        if (time != null) {
-                            notTimeBecauseIsDelete = false
-                            title = langLO[lang].pinsupdate[0]
-                            colorForEmbed = serverConfig.color.success
-                        } else {
-                            notTimeBecauseIsDelete = true
-                            title = langLO[lang].pinsupdate[1]
-                            colorForEmbed = serverConfig.color.error
-                        }
-
-                        const embed = new EmbedBuilder()
-                            .setTitle(title)
-                            .setColor(colorForEmbed)
-                            .setThumbnail(user.avatarURL())
-                            .setAuthor({ name: channel.guild.name, iconURL: await verifImgIcon(channel.guild.id, channel.guild.icon) })
-                            .addFields(
-                                { name: langLO[lang].pinsupdate[2], value: `<#${channel.id}>`, inline: true }
-                            )
-                            .setTimestamp()
-                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
-
-                        if (notTimeBecauseIsDelete === false) {
-                            embed.addFields(
-                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true })
-                        }
-
-                        if (options === true) {
-                            if (channel.nsfw === false) {
-                                forNsfw = langLO[lang].tools[2]
-                            } else if (channel.nsfw === true) {
-                                forNsfw = langLO[lang].tools[3]
+                            if (time != null) {
+                                notTimeBecauseIsDelete = false
+                                title = langLO[lang].pinsupdate[0]
+                                colorForEmbed = serverConfig.color.success
+                            } else {
+                                notTimeBecauseIsDelete = true
+                                title = langLO[lang].pinsupdate[1]
+                                colorForEmbed = serverConfig.color.error
                             }
-                            embed.addFields(
-                                {
-                                    name: "NSFW ?",
-                                    value: forNsfw,
-                                    inline: true
-                                }
-                                ,
-                                {
-                                    name: langLO[lang].tools[4],
-                                    value: `<#${channel.parentId}>`,
-                                    inline: true
-                                }
-                            )
-                        }
 
-                        if (time != null) {
-                            embed.addFields(
-                                { name: langLO[lang].pinsupdate[3], value: new Date(time).toLocaleString(), inline: true })
-                        }
+                            const embed = new EmbedBuilder()
+                                .setTitle(title)
+                                .setColor(colorForEmbed)
+                                .setThumbnail(user.avatarURL())
+                                .setAuthor({ name: channel.guild.name, iconURL: await verifImgIcon(channel.guild.id, channel.guild.icon) })
+                                .addFields(
+                                    { name: langLO[lang].pinsupdate[2], value: `<#${channel.id}>`, inline: true }
+                                )
+                                .setTimestamp()
+                                .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1]);
+                            if (notTimeBecauseIsDelete === false) {
+                                embed.addFields(
+                                    { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true })
+                            }
+
+                            if (options === true) {
+                                if (channel.nsfw === false) {
+                                    forNsfw = langLO[lang].tools[2]
+                                } else if (channel.nsfw === true) {
+                                    forNsfw = langLO[lang].tools[3]
+                                }
+                                embed.addFields(
+                                    {
+                                        name: "NSFW ?",
+                                        value: forNsfw,
+                                        inline: true
+                                    }
+                                    ,
+                                    {
+                                        name: langLO[lang].tools[4],
+                                        value: `<#${channel.parentId}>`,
+                                        inline: true
+                                    }
+                                )
+                            }
+
+                            if (time != null) {
+                                embed.addFields(
+                                    { name: langLO[lang].pinsupdate[3], value: new Date(time).toLocaleString(), inline: true })
+                            }
+
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1]);
+                                }
                             }
                         }
                     }
@@ -795,8 +805,9 @@ function getEmojiDelete(client, lang) {
  * Event when an emoji is updated
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
+ * @param {options} bot Have events created by bots. True: true / False: false
 */
-async function getEmojiUpdate(client, lang) {
+async function getEmojiUpdate(client, lang, bot) {
     try {
         if (verifyConfig()) {
             let serverConfig = verifyConfig()
@@ -809,25 +820,29 @@ async function getEmojiUpdate(client, lang) {
                     const logEntry = auditLogs.entries.first();
                     if (logEntry) {
                         const user = logEntry.executor;
+                        if (user.bot === true && bot === false) {
+                            return
+                        }
+                        else if (!bot || bot === true) {
+                            const embed = new EmbedBuilder()
+                                .setTitle(langLO[lang].emojiupdate[0])
+                                .setColor(serverConfig.color.warning)
+                                .setDescription(`**${oldEmoji.name}** ➡️ **${newEmoji.name}**`)
+                                .setThumbnail(`https://cdn.discordapp.com/emojis/${newEmoji.id}.png`)
+                                .setAuthor({ name: newEmoji.guild.name, iconURL: await verifImgIcon(newEmoji.guild.id, newEmoji.guild.icon) })
+                                .addFields(
+                                    { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true },
+                                    { name: langLO[lang].emojiupdate[1], value: `${newEmoji.id}`, inline: true }
+                                )
+                                .setTimestamp()
+                                .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        const embed = new EmbedBuilder()
-                            .setTitle(langLO[lang].emojiupdate[0])
-                            .setColor(serverConfig.color.warning)
-                            .setDescription(`**${oldEmoji.name}** ➡️ **${newEmoji.name}**`)
-                            .setThumbnail(`https://cdn.discordapp.com/emojis/${newEmoji.id}.png`)
-                            .setAuthor({ name: newEmoji.guild.name, iconURL: await verifImgIcon(newEmoji.guild.id, newEmoji.guild.icon) })
-                            .addFields(
-                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: true },
-                                { name: langLO[lang].emojiupdate[1], value: `${newEmoji.id}`, inline: true }
-                            )
-                            .setTimestamp()
-                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
-
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                newEmoji.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1]);
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    newEmoji.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1]);
+                                }
                             }
                         }
                     }
@@ -1071,8 +1086,9 @@ function getScheduledDelete(client, lang) {
  * Event when it is the update of an event
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
+ * @param {options} bot Have events created by bots. True: true / False: false
 */
-function getScheduledUpdate(client, lang) {
+function getScheduledUpdate(client, lang, bot) {
     try {
         if (verifyConfig()) {
             let serverConfig = verifyConfig()
@@ -1085,64 +1101,68 @@ function getScheduledUpdate(client, lang) {
                     const logEntry = auditLogs.entries.first();
                     if (logEntry) {
                         const user = logEntry.executor;
-
-                        const embed = new EmbedBuilder()
-                            .setTitle(langLO[lang].scheduledupdate[0])
-                            .setColor(serverConfig.color.warning)
-                            .setAuthor({ name: newGuildScheduledEvent.guild.name, iconURL: await verifImgIcon(newGuildScheduledEvent.guild.id, newGuildScheduledEvent.guild.icon) })
-                            .addFields(
-                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false }
-
-                            )
-                            .setTimestamp()
-                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
-
-
-                        if (oldGuildScheduledEvent.name != newGuildScheduledEvent.name) {
-                            embed.addFields({
-                                name: langLO[lang].scheduledupdate[1],
-                                value: `**${oldGuildScheduledEvent.name}** ➡️ **${newGuildScheduledEvent.name}**`
-                            })
+                        if (user.bot === true && bot === false) {
+                            return
                         }
+                        else if (!bot || bot === true) {
+                            const embed = new EmbedBuilder()
+                                .setTitle(langLO[lang].scheduledupdate[0])
+                                .setColor(serverConfig.color.warning)
+                                .setAuthor({ name: newGuildScheduledEvent.guild.name, iconURL: await verifImgIcon(newGuildScheduledEvent.guild.id, newGuildScheduledEvent.guild.icon) })
+                                .addFields(
+                                    { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false }
 
-                        if (oldGuildScheduledEvent.description != newGuildScheduledEvent.description) {
-                            embed.addFields({
-                                name: langLO[lang].scheduledupdate[2],
-                                value: `**${oldGuildScheduledEvent.description}** ➡️ **${newGuildScheduledEvent.description}**`
-                            })
-                        }
+                                )
+                                .setTimestamp()
+                                .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (oldGuildScheduledEvent.scheduledStartTimestamp != newGuildScheduledEvent.scheduledStartTimestamp) {
-                            embed.addFields({
-                                name: langLO[lang].scheduledupdate[3],
-                                value: `**${new Date(oldGuildScheduledEvent.scheduledStartTimestamp).toLocaleString()}** ➡️ **${new Date(newGuildScheduledEvent.scheduledStartTimestamp).toLocaleString()}**`
-                            })
-                        }
 
-                        if (oldGuildScheduledEvent.scheduledEndTimestamp != newGuildScheduledEvent.scheduledEndTimestamp) {
-                            embed.addFields({
-                                name: langLO[lang].scheduledupdate[4],
-                                value: `**${new Date(oldGuildScheduledEvent.scheduledEndTimestamp).toLocaleString()}** ➡️ **${new Date(newGuildScheduledEvent.scheduledEndTimestamp).toLocaleString()}**`
-                            })
-                        }
+                            if (oldGuildScheduledEvent.name != newGuildScheduledEvent.name) {
+                                embed.addFields({
+                                    name: langLO[lang].scheduledupdate[1],
+                                    value: `**${oldGuildScheduledEvent.name}** ➡️ **${newGuildScheduledEvent.name}**`
+                                })
+                            }
 
-                        if (oldGuildScheduledEvent.image != newGuildScheduledEvent.image) {
-                            embed.setDescription(langLO[lang].scheduledupdate[5])
-                            embed.setThumbnail(`https://cdn.discordapp.com/guild-events/${newGuildScheduledEvent.id}/${newGuildScheduledEvent.image}.png`)
-                        }
+                            if (oldGuildScheduledEvent.description != newGuildScheduledEvent.description) {
+                                embed.addFields({
+                                    name: langLO[lang].scheduledupdate[2],
+                                    value: `**${oldGuildScheduledEvent.description}** ➡️ **${newGuildScheduledEvent.description}**`
+                                })
+                            }
 
-                        if (oldGuildScheduledEvent.entityMetadata.location != newGuildScheduledEvent.entityMetadata.location) {
-                            embed.addFields({
-                                name: langLO[lang].scheduledupdate[6],
-                                value: `**${oldGuildScheduledEvent.entityMetadata.location}** ➡️ **${newGuildScheduledEvent.entityMetadata.location}**`
-                            })
-                        }
+                            if (oldGuildScheduledEvent.scheduledStartTimestamp != newGuildScheduledEvent.scheduledStartTimestamp) {
+                                embed.addFields({
+                                    name: langLO[lang].scheduledupdate[3],
+                                    value: `**${new Date(oldGuildScheduledEvent.scheduledStartTimestamp).toLocaleString()}** ➡️ **${new Date(newGuildScheduledEvent.scheduledStartTimestamp).toLocaleString()}**`
+                                })
+                            }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                newGuildScheduledEvent.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1]);
+                            if (oldGuildScheduledEvent.scheduledEndTimestamp != newGuildScheduledEvent.scheduledEndTimestamp) {
+                                embed.addFields({
+                                    name: langLO[lang].scheduledupdate[4],
+                                    value: `**${new Date(oldGuildScheduledEvent.scheduledEndTimestamp).toLocaleString()}** ➡️ **${new Date(newGuildScheduledEvent.scheduledEndTimestamp).toLocaleString()}**`
+                                })
+                            }
+
+                            if (oldGuildScheduledEvent.image != newGuildScheduledEvent.image) {
+                                embed.setDescription(langLO[lang].scheduledupdate[5])
+                                embed.setThumbnail(`https://cdn.discordapp.com/guild-events/${newGuildScheduledEvent.id}/${newGuildScheduledEvent.image}.png`)
+                            }
+
+                            if (oldGuildScheduledEvent.entityMetadata.location != newGuildScheduledEvent.entityMetadata.location) {
+                                embed.addFields({
+                                    name: langLO[lang].scheduledupdate[6],
+                                    value: `**${oldGuildScheduledEvent.entityMetadata.location}** ➡️ **${newGuildScheduledEvent.entityMetadata.location}**`
+                                })
+                            }
+
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    newGuildScheduledEvent.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1]);
+                                }
                             }
                         }
                     }
@@ -2109,8 +2129,9 @@ function getRoleDelete(client, lang) {
  * Event when a user update a role
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
+ * @param {options} bot Have events created by bots. True: true / False: false
 */
-function getRoleUpdate(client, lang) {
+function getRoleUpdate(client, lang, bot) {
     try {
         if (verifyConfig()) {
             let serverConfig = verifyConfig()
@@ -2122,38 +2143,42 @@ function getRoleUpdate(client, lang) {
                     });
                     const logEntry = auditLogs.entries.first();
                     if (logEntry) {
-
                         const user = logEntry.executor;
-                        const embed = new EmbedBuilder()
-                            .setTitle(langLO[lang].roleupdate[0])
-                            .setColor(serverConfig.color.warning)
-                            .setThumbnail(user.avatarURL())
-                            .setAuthor({ name: newRole.guild.name, iconURL: await verifImgIcon(newRole.guild.id, newRole.guild.icon) })
-                            .addFields(
-                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false }
-                            )
-                            .setTimestamp()
-                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
-
-                        if (oldRole.name !== newRole.name) {
-                            embed.addFields({
-                                name: langLO[lang].roleupdate[1],
-                                value: `**${oldRole.name}** ➡️ **${newRole.name}**`
-                            })
+                        if (user.bot === true && bot === false) {
+                            return
                         }
+                        else if (!bot || bot === true) {
+                            const embed = new EmbedBuilder()
+                                .setTitle(langLO[lang].roleupdate[0])
+                                .setColor(serverConfig.color.warning)
+                                .setThumbnail(user.avatarURL())
+                                .setAuthor({ name: newRole.guild.name, iconURL: await verifImgIcon(newRole.guild.id, newRole.guild.icon) })
+                                .addFields(
+                                    { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false }
+                                )
+                                .setTimestamp()
+                                .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (oldRole.color !== newRole.color) {
-                            embed.addFields({
-                                name: langLO[lang].roleupdate[2],
-                                value: `**${oldRole.color}** ➡️ **${newRole.color}**`
-                            })
-                        }
+                            if (oldRole.name !== newRole.name) {
+                                embed.addFields({
+                                    name: langLO[lang].roleupdate[1],
+                                    value: `**${oldRole.name}** ➡️ **${newRole.name}**`
+                                })
+                            }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                newRole.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1]);
+                            if (oldRole.color !== newRole.color) {
+                                embed.addFields({
+                                    name: langLO[lang].roleupdate[2],
+                                    value: `**${oldRole.color}** ➡️ **${newRole.color}**`
+                                })
+                            }
+
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    newRole.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1]);
+                                }
                             }
                         }
                     }
@@ -2282,8 +2307,9 @@ function getStickerDelete(client, lang) {
  * Event when a user update a sticker
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
+ * @param {options} bot Have events created by bots. True: true / False: false
 */
-function getStickerUpdate(client, lang) {
+function getStickerUpdate(client, lang, bot) {
     try {
         if (verifyConfig()) {
             let serverConfig = verifyConfig()
@@ -2296,43 +2322,48 @@ function getStickerUpdate(client, lang) {
                     const logEntry = auditLogs.entries.first();
                     if (logEntry) {
                         const user = logEntry.executor;
-                        const embed = new EmbedBuilder()
-                            .setTitle(langLO[lang].stickerupdate[0])
-                            .setColor(serverConfig.color.warning)
-                            .setThumbnail(user.avatarURL())
-                            .setAuthor({ name: newSticker.guild.name, iconURL: await verifImgIcon(newSticker.guild.id, newSticker.guild.icon) })
-                            .addFields(
-                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false }
-                            )
-                            .setTimestamp()
-                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
-
-                        if (oldSticker.name != newSticker.name) {
-                            embed.addFields({
-                                name: langLO[lang].stickerupdate[1],
-                                value: `**${oldSticker.name}** ➡️ **${newSticker.name}**`
-                            })
+                        if (user.bot === true && bot === false) {
+                            return
                         }
+                        else if (!bot || bot === true) {
+                            const embed = new EmbedBuilder()
+                                .setTitle(langLO[lang].stickerupdate[0])
+                                .setColor(serverConfig.color.warning)
+                                .setThumbnail(user.avatarURL())
+                                .setAuthor({ name: newSticker.guild.name, iconURL: await verifImgIcon(newSticker.guild.id, newSticker.guild.icon) })
+                                .addFields(
+                                    { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false }
+                                )
+                                .setTimestamp()
+                                .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (oldSticker.description != newSticker.description) {
-                            embed.addFields({
-                                name: langLO[lang].stickerupdate[2],
-                                value: `**${oldSticker.description}** ➡️ **${newSticker.description}**`
-                            })
-                        }
+                            if (oldSticker.name != newSticker.name) {
+                                embed.addFields({
+                                    name: langLO[lang].stickerupdate[1],
+                                    value: `**${oldSticker.name}** ➡️ **${newSticker.name}**`
+                                })
+                            }
 
-                        if (oldSticker.tags != newSticker.tags) {
-                            embed.addFields({
-                                name: langLO[lang].stickerupdate[3],
-                                value: `**${oldSticker.tags}** ➡️ **${newSticker.tags}**`
-                            })
-                        }
+                            if (oldSticker.description != newSticker.description) {
+                                embed.addFields({
+                                    name: langLO[lang].stickerupdate[2],
+                                    value: `**${oldSticker.description}** ➡️ **${newSticker.description}**`
+                                })
+                            }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                newSticker.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1]);
+                            if (oldSticker.tags != newSticker.tags) {
+                                embed.addFields({
+                                    name: langLO[lang].stickerupdate[3],
+                                    value: `**${oldSticker.tags}** ➡️ **${newSticker.tags}**`
+                                })
+                            }
+
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    newSticker.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1]);
+                                }
                             }
                         }
                     }
@@ -2457,8 +2488,9 @@ function getThreadDelete(client, lang) {
  * Event when a user update a thread
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
+ * @param {options} bot Have events created by bots. True: true / False: false
 */
-function getThreadUpdate(client, lang) {
+function getThreadUpdate(client, lang, bot) {
     try {
         if (verifyConfig()) {
             let serverConfig = verifyConfig()
@@ -2471,45 +2503,50 @@ function getThreadUpdate(client, lang) {
                     const logEntry = auditLogs.entries.first();
                     if (logEntry) {
                         const user = logEntry.executor;
-                        const embed = new EmbedBuilder()
-                            .setTitle(langLO[lang].threadupdate[0])
-                            .setColor(serverConfig.color.warning)
-                            .setThumbnail(user.avatarURL())
-                            .setAuthor({ name: newThread.guild.name, iconURL: await verifImgIcon(newThread.guild.id, newThread.guild.icon) })
-                            .setTimestamp()
-                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() })
-                            .addFields(
-                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false },
-                                { name: langLO[lang].threadupdate[1], value: `${newThread.name}`, inline: false },
-                            )
+                        if (user.bot === true && bot === false) {
+                            return
+                        }
+                        else if (!bot || bot === true) {
+                            const embed = new EmbedBuilder()
+                                .setTitle(langLO[lang].threadupdate[0])
+                                .setColor(serverConfig.color.warning)
+                                .setThumbnail(user.avatarURL())
+                                .setAuthor({ name: newThread.guild.name, iconURL: await verifImgIcon(newThread.guild.id, newThread.guild.icon) })
+                                .setTimestamp()
+                                .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() })
+                                .addFields(
+                                    { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false },
+                                    { name: langLO[lang].threadupdate[1], value: `${newThread.name}`, inline: false },
+                                )
 
 
-                        if (oldThread.name !== newThread.name) {
-                            embed.addFields({ name: langLO[lang].threadupdate[2], value: `**${oldThread.name}** ➡️ **${newThread.name}**` })
-                        }
-                        if (oldThread.locked !== newThread.locked) {
-                            let valeurVerouillage
-                            if (newThread.locked === false) { valeurVerouillage = langLO[lang].tools[2] } else { valeurVerouillage = langLO[lang].tools[3] }
-                            embed.addFields({ name: langLO[lang].threadupdate[3], value: `${valeurVerouillage}` })
-                        }
-                        if (oldThread.archived !== newThread.archived) {
-                            let valeurArchivage
-                            if (newThread.archived === false) { valeurArchivage = langLO[lang].tools[2] } else { valeurArchivage = langLO[lang].tools[3] }
-                            embed.addFields({ name: langLO[lang].threadupdate[4], value: `${valeurArchivage}` })
-                        }
-                        if (oldThread.rateLimitPerUser !== newThread.rateLimitPerUser) {
-                            embed.addFields({ name: langLO[lang].threadupdate[5], value: `${newThread.rateLimitPerUser}` })
-                        }
-                        if (oldThread.archiveTimestamp !== newThread.archiveTimestamp) {
-                            let duree = formatDuration(newThread.archiveTimestamp, 1)
-                            embed.addFields({ name: langLO[lang].threadupdate[6], value: `${duree.days} ${langLO[lang].tools[5]}, ${duree.hours} ${langLO[lang].tools[6]}, ${duree.minutes} ${langLO[lang].tools[7]}, ${duree.seconds}${langLO[lang].tools[8]}` })
-                        }
+                            if (oldThread.name !== newThread.name) {
+                                embed.addFields({ name: langLO[lang].threadupdate[2], value: `**${oldThread.name}** ➡️ **${newThread.name}**` })
+                            }
+                            if (oldThread.locked !== newThread.locked) {
+                                let valeurVerouillage
+                                if (newThread.locked === false) { valeurVerouillage = langLO[lang].tools[2] } else { valeurVerouillage = langLO[lang].tools[3] }
+                                embed.addFields({ name: langLO[lang].threadupdate[3], value: `${valeurVerouillage}` })
+                            }
+                            if (oldThread.archived !== newThread.archived) {
+                                let valeurArchivage
+                                if (newThread.archived === false) { valeurArchivage = langLO[lang].tools[2] } else { valeurArchivage = langLO[lang].tools[3] }
+                                embed.addFields({ name: langLO[lang].threadupdate[4], value: `${valeurArchivage}` })
+                            }
+                            if (oldThread.rateLimitPerUser !== newThread.rateLimitPerUser) {
+                                embed.addFields({ name: langLO[lang].threadupdate[5], value: `${newThread.rateLimitPerUser}` })
+                            }
+                            if (oldThread.archiveTimestamp !== newThread.archiveTimestamp) {
+                                let duree = formatDuration(newThread.archiveTimestamp, 1)
+                                embed.addFields({ name: langLO[lang].threadupdate[6], value: `${duree.days} ${langLO[lang].tools[5]}, ${duree.hours} ${langLO[lang].tools[6]}, ${duree.minutes} ${langLO[lang].tools[7]}, ${duree.seconds}${langLO[lang].tools[8]}` })
+                            }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                newThread.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1]);
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    newThread.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1]);
+                                }
                             }
                         }
                     }
