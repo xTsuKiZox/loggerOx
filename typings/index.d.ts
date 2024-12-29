@@ -37,7 +37,7 @@ declare module "loggerox" {
    * @param {object} client Client Recover from Discord
    * @param {string} lang Language chosen by the person | fr/en
    * @param {boolean} options No more options. Yes = true / No = false
-   * @param {options} bot Have events created by bots. True: true / False: false
+   * @param {boolean} bot Have events created by bots. True: true / False: false
    */
   export function getChannelUpdate(
     client: object,
@@ -50,7 +50,7 @@ declare module "loggerox" {
    * @param {object} client Client Recover from Discord
    * @param {string} lang Language chosen by the person | fr/en
    * @param {boolean} options No more options. Yes = true / No = false
-   * @param {options} bot Have events created by bots. True: true / False: false
+   * @param {boolean} bot Have events created by bots. True: true / False: false
    */
   export function getPinsUpdate(
     client: object,
@@ -80,7 +80,7 @@ declare module "loggerox" {
    * Event when an emoji is updated
    * @param {object} client Client Recover from Discord
    * @param {string} lang Language chosen by the person | fr/en
-   * @param {options} bot Have events created by bots. True: true / False: false
+   * @param {boolean} bot Have events created by bots. True: true / False: false
    */
   export function getEmojiUpdate(
     client: object,
@@ -115,7 +115,7 @@ declare module "loggerox" {
    * Event when it is the update of an event
    * @param {object} client Client Recover from Discord
    * @param {string} lang Language chosen by the person | fr/en
-   * @param {options} bot Have events created by bots. True: true / False: false
+   * @param {boolean} bot Have events created by bots. True: true / False: false
    */
   export function getScheduledUpdate(
     client: object,
@@ -180,8 +180,13 @@ declare module "loggerox" {
    * Event when a user update an message
    * @param {object} client Client Recover from Discord
    * @param {string} lang Language chosen by the person | fr/en
+   * @param {boolean} bot Have events created by bots. True: true / False: false
    */
-  export function getMessageUpdate(client: object, lang: string): void;
+  export function getMessageUpdate(
+    client: object,
+    lang: string,
+    bot: boolean
+  ): void;
   /**
    * Event when a user delete an message
    * @param {object} client Client Recover from Discord
@@ -243,7 +248,7 @@ declare module "loggerox" {
    * Event when a user update a role
    * @param {object} client Client Recover from Discord
    * @param {string} lang Language chosen by the person | fr/en
-   * @param {options} bot Have events created by bots. True: true / False: false
+   * @param {boolean} bot Have events created by bots. True: true / False: false
    */
   export function getRoleUpdate(
     client: object,
@@ -266,7 +271,7 @@ declare module "loggerox" {
    * Event when a user update a sticker
    * @param {object} client Client Recover from Discord
    * @param {string} lang Language chosen by the person | fr/en
-   * @param {options} bot Have events created by bots. True: true / False: false
+   * @param {boolean} bot Have events created by bots. True: true / False: false
    */
   export function getStickerUpdate(
     client: object,
@@ -289,7 +294,7 @@ declare module "loggerox" {
    * Event when a user update a thread
    * @param {object} client Client Recover from Discord
    * @param {string} lang Language chosen by the person | fr/en
-   * @param {options} bot Have events created by bots. True: true / False: false
+   * @param {boolean} bot Have events created by bots. True: true / False: false
    */
   export function getThreadUpdate(
     client: object,

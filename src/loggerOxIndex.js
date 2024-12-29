@@ -449,7 +449,7 @@ function getChannelDelete(client, lang, options) {
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
  * @param {boolean} options No more options. True: true / False: false
- * @param {options} bot Have events created by bots. True: true / False: false
+ * @param {boolean} bot Have events created by bots. True: true / False: false
 */
 function getChannelUpdate(client, lang, options, bot) {
     try {
@@ -581,7 +581,7 @@ function getChannelUpdate(client, lang, options, bot) {
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
  * @param {boolean} options No more options. True: Yes / False: No
- * @param {options} bot Have events created by bots. True: true / False: false
+ * @param {boolean} bot Have events created by bots. True: true / False: false
 */
 function getPinsUpdate(client, lang, options, bot) {
     try {
@@ -805,7 +805,7 @@ function getEmojiDelete(client, lang) {
  * Event when an emoji is updated
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
- * @param {options} bot Have events created by bots. True: true / False: false
+ * @param {boolean} bot Have events created by bots. True: true / False: false
 */
 async function getEmojiUpdate(client, lang, bot) {
     try {
@@ -1086,7 +1086,7 @@ function getScheduledDelete(client, lang) {
  * Event when it is the update of an event
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
- * @param {options} bot Have events created by bots. True: true / False: false
+ * @param {boolean} bot Have events created by bots. True: true / False: false
 */
 function getScheduledUpdate(client, lang, bot) {
     try {
@@ -1692,39 +1692,42 @@ function getInviteDelete(client, lang) {
  * Event when a user update an message
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
+ * @param {boolean} bot Have events created by bots. True: true / False: false
 */
-function getMessageUpdate(client, lang) {
+function getMessageUpdate(client, lang, bot) {
     try {
         if (verifyConfig()) {
             let serverConfig = verifyConfig()
             if (langLO[lang] && langLO[lang].messageupdate) {
                 client.on("messageUpdate", async (oldMessage, newMessage) => {
+                    if (bot === false && newMessage.author.bot === true) {
+                        return
+                    } else if (!bot || bot === true) {
+                        const embed = new EmbedBuilder()
+                            .setTitle(langLO[lang].messageupdate[0])
+                            .setColor(serverConfig.color.warning)
+                            .setThumbnail(newMessage.author.avatarURL())
+                            .setAuthor({ name: newMessage.guild.name, iconURL: await verifImgIcon(newMessage.guild.id, newMessage.guild.icon) })
+                            .addFields(
+                                { name: langLO[lang].tools[1], value: `<@${newMessage.author.id}>`, inline: false },
+                                { name: langLO[lang].messageupdate[1], value: `https://discord.com/channels/${newMessage.guildId}/${newMessage.channelId}/${newMessage.id}`, inline: false },
+                            )
+                            .setTimestamp()
+                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                    const embed = new EmbedBuilder()
-                        .setTitle(langLO[lang].messageupdate[0])
-                        .setColor(serverConfig.color.warning)
-                        .setThumbnail(newMessage.author.avatarURL())
-                        .setAuthor({ name: newMessage.guild.name, iconURL: await verifImgIcon(newMessage.guild.id, newMessage.guild.icon) })
-                        .addFields(
-                            { name: langLO[lang].tools[1], value: `<@${newMessage.author.id}>`, inline: false },
-                            { name: langLO[lang].messageupdate[1], value: `https://discord.com/channels/${newMessage.guildId}/${newMessage.channelId}/${newMessage.id}`, inline: false },
-                        )
-                        .setTimestamp()
-                        .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
+                        if (oldMessage.content !== newMessage.content) {
+                            embed.addFields({
+                                name: langLO[lang].messageupdate[2],
+                                value: `**${oldMessage.content}** ➡️ **${newMessage.content}**`
+                            })
+                        }
 
-
-                    if (oldMessage.content !== newMessage.content) {
-                        embed.addFields({
-                            name: langLO[lang].messageupdate[2],
-                            value: `**${oldMessage.content}** ➡️ **${newMessage.content}**`
-                        })
-                    }
-
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            newMessage.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1]);
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                newMessage.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1]);
+                            }
                         }
                     }
                 });
@@ -2129,7 +2132,7 @@ function getRoleDelete(client, lang) {
  * Event when a user update a role
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
- * @param {options} bot Have events created by bots. True: true / False: false
+ * @param {boolean} bot Have events created by bots. True: true / False: false
 */
 function getRoleUpdate(client, lang, bot) {
     try {
@@ -2307,7 +2310,7 @@ function getStickerDelete(client, lang) {
  * Event when a user update a sticker
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
- * @param {options} bot Have events created by bots. True: true / False: false
+ * @param {boolean} bot Have events created by bots. True: true / False: false
 */
 function getStickerUpdate(client, lang, bot) {
     try {
@@ -2488,7 +2491,7 @@ function getThreadDelete(client, lang) {
  * Event when a user update a thread
  * @param {object} client Client Recover from Discord
  * @param {string} lang Language chosen by the person | fr/en
- * @param {options} bot Have events created by bots. True: true / False: false
+ * @param {boolean} bot Have events created by bots. True: true / False: false
 */
 function getThreadUpdate(client, lang, bot) {
     try {
