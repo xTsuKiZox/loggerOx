@@ -2648,7 +2648,6 @@ function getUserUpdate(client, lang) {
             if (langLO[lang] && langLO[lang].userupdate) {
                 client.on("userUpdate", async (oldUser, newUser) => {
                     let descriptionParts = [];
-
                     const embed = new EmbedBuilder()
                         .setTitle(langLO[lang].userupdate[0])
                         .setColor(serverConfig.color.warning)
@@ -2669,17 +2668,17 @@ function getUserUpdate(client, lang) {
                         descriptionParts.push(langLO[lang].userupdate[4]);
                         embed.setThumbnail(newUser.avatarURL())
                     }
-
                     if (oldUser.banner != newUser.banner) {
                         const format = newUser.banner.startsWith("a_") ? ".gif" : ".png"
                         descriptionParts.push(langLO[lang].userupdate[5]);
                         embed.setImage(`https://cdn.discordapp.com/banners/${newUser.id}/${newUser.banner}${format}?size=4096`)
                     }
-
+                    if (oldUser.avatarDecorationData != newUser.avatarDecorationData) {
+                        descriptionParts.push(langLO[lang].userupdate[6]);
+                    }
                     if (descriptionParts.length > 0) {
                         embed.setDescription(descriptionParts.join(" | "));
                     }
-
                     if (serverConfig.message.idChannelLog) {
                         try {
                             client.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });

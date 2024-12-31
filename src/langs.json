@@ -194,7 +194,8 @@
             "Nom d'utilisateur mise à jour :",
             "Nom globale mise à jour :",
             "Avatar mise à jour",
-            "Banniere mise à jour"
+            "Banniere mise à jour",
+            "Décoration d'avatar mise à jour"
         ],
         "voicestateupdate": [
             "Un utilisateur",
@@ -455,7 +456,8 @@
             "Updated username:",
             "Updated global name:",
             "Updated avatar",
-            "Updated banner"
+            "Updated banner",
+            "Avatar decoration updated"
         ],
         "voicestateupdate": [
             "A user",
