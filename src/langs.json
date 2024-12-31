@@ -104,7 +104,8 @@
         "messagedelete": [
             "Un message à été supprimé !",
             "Dans le salon :",
-            "Message supprimé :"
+            "Message supprimé :",
+            "Message crée de base par :"
         ],
         "messagedeletebulk": [
             "Plusieurs messages ont été supprimé !",
@@ -366,7 +367,8 @@
         "messagedelete": [
             "A message has been deleted!",
             "In channel:",
-            "Deleted message:"
+            "Deleted message:",
+            "Message created from base by :"
         ],
         "messagedeletebulk": [
             "Multiple messages have been deleted!",

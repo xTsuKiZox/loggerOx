@@ -1769,6 +1769,7 @@ function getMessageDelete(client, lang) {
                             .addFields(
                                 { name: langLO[lang].messagedelete[1], value: `<#${message.channelId}>`, inline: false },
                                 { name: langLO[lang].messagedelete[2], value: `\`${message.content}\``, inline: false },
+                                { name: langLO[lang].messagedelete[3], value: `<@${message.author.id}>`, inline: false },
                             )
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
