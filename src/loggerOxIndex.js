@@ -1384,11 +1384,10 @@ function getGuildMemberUpdate(client, lang) {
 
                         const embed = new EmbedBuilder()
                             .setTitle(langLO[lang].guildmemberupdate[0])
-                            .setThumbnail(await verifImgAvatar(user.id, user.avatar))
+                            .setThumbnail(await verifImgAvatar(newMember.id, newMember.avatar))
                             .setAuthor({ name: newMember.guild.name, iconURL: await verifImgIcon(newMember.guild.id, newMember.guild.icon) })
                             .addFields(
-                                { name: langLO[lang].guildmemberupdate[6], value: `<@${oldMember.id}>`, inline: false },
-                                { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false }
+                                { name: langLO[lang].guildmemberupdate[6], value: `<@${oldMember.id}>`, inline: false }
                             )
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
