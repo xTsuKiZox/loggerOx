@@ -1765,20 +1765,24 @@ function getMessageDelete(client, lang) {
                             .setTitle(langLO[lang].messagedelete[0])
                             .setColor(serverConfig.color.error)
                             .setAuthor({ name: message.guild.name, iconURL: await verifImgIcon(message.guild.id, message.guild.icon) })
-                            .addFields(
+                            .setTimestamp()
+                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
+
+                        if (message.content) {
+                            embed.addFields(
                                 { name: langLO[lang].messagedelete[1], value: `<#${message.channelId}>`, inline: false },
                                 { name: langLO[lang].messagedelete[2], value: `\`${message.content}\``, inline: false },
                                 { name: langLO[lang].messagedelete[3], value: `<@${message.author.id}>`, inline: false },
                             )
-                            .setTimestamp()
-                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
-
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                message.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "MessageDelete");
-                            }
+                        } else if (message.attachments) {
+                            message.attachments.map(test => {
+                                embed.setDescription(langLO[lang].messagedelete[4])
+                                embed.setImage(test.url)
+                                embed.addFields(
+                                    { name: langLO[lang].messagedelete[1], value: `<#${message.channelId}>`, inline: false },
+                                    { name: langLO[lang].messagedelete[3], value: `<@${message.author.id}>`, inline: false },
+                                )
+                            })
                         }
 
                     }
