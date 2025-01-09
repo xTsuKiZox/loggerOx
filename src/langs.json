@@ -235,7 +235,8 @@
             "Ne pas filtrer",
             "Filtrer les messages des membres du serveur sans rôles",
             "Filtrer les messages de tous les membres",
-            "Salon d'alertes d'activité mise à jour :"
+            "Salon d'alertes d'activité mise à jour :",
+            "Nombre de boosts mise à jour :"
         ],
         "guildmemberupdate": [
             "Un membre a été mise à jour !",
@@ -499,7 +500,8 @@
             "Do not filter",
             "Filter messages from members without roles",
             "Filter messages from all members",
-            "Updated activity alert channel:"
+            "Updated activity alert channel:",
+            "Number of boosts updated:"
         ],
         "guildmemberupdate": [
             "A member has been updated!",

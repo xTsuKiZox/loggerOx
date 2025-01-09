@@ -1337,7 +1337,9 @@ function getGuildUpdate(client, lang) {
                     if (oldGuild.safetyAlertsChannelId != newGuild.safetyAlertsChannelId) {
                         embed.addFields({ name: langLO[lang].guildupdate[23], value: `<#${newGuild.safetyAlertsChannelId}>` })
                     }
-
+                    if (oldGuild.preniumSubscriptionCount != newGuild.preniumSubscriptionCount) {
+                        embed.addFields({ name: langLO[lang].guildupdate[24], value: `<#${newGuild.preniumSubscriptionCount}>` })
+                    }
                     if (descriptionParts.length > 0) {
                         embed.setDescription(descriptionParts.join(" | "));
                     }
