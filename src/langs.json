@@ -261,7 +261,8 @@
         "error": [
             "Veuillez définir la langue (fr/en) en paramètre lors de l'appel de la fonction",
             "Le salon de logs n'est pas configuré ou n'est pas accessible dans la fonction :",
-            "La langue que vous définissez n'est pas prise en charge !"
+            "La langue que vous définissez n'est pas prise en charge !",
+            "Le serveur pour salon de logs n'est pas configuré ou n'est pas accessible dans la fonction :"
         ]
     },
     "en": {
@@ -526,7 +527,8 @@
         "error": [
             "Please define the language (fr/en) as a parameter when calling the function",
             "The log room is not configured or is not accessible in the function :",
-            "The language you defined is not supported!"
+            "The language you defined is not supported!",
+            "The server for log room is not configured or is not accessible in the function:"
         ]
     }
 }

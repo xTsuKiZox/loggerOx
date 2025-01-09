@@ -14,11 +14,17 @@ const path = require("path");
 /**
  * Function to initialize configuration for LoggerOx
  * @param {string} idChannelLog The ID of the channel to log events.
+ * @param {string} idServer Your server id
  */
-function initLoggerOx(idChannelLog) {
+function initLoggerOx(idChannelLog, idServer) {
     if (!idChannelLog) {
         throw new Error(
             "The `idChannelLog` parameter are required in the initLoggerOx function call"
+        );
+    }
+    if (!idServer) {
+        throw new Error(
+            "The `idServer` parameter are required in the initLoggerOx function call"
         );
     }
     const defaultColors = {
@@ -32,6 +38,7 @@ function initLoggerOx(idChannelLog) {
     let configData = {
         message: {
             idChannelLog,
+            idServer
         },
         color: defaultColors,
     };
@@ -42,6 +49,7 @@ function initLoggerOx(idChannelLog) {
 
             configData.message = {
                 idChannelLog: idChannelLog || existingConfig.message.idChannelLog,
+                idServer: idServer || existingConfig.message.idServer,
             };
 
             configData.color = existingConfig.color || defaultColors;
@@ -182,6 +190,11 @@ function verifyConfig() {
     if (!configData.message || !configData.message.idChannelLog) {
         throw new Error(
             "The key `idChannelLog` is missing in the configuration file. Please update the configuration."
+        );
+    }
+    if (!configData.message || !configData.message.idServer) {
+        throw new Error(
+            "The key `idServer` is missing in the configuration file. Please update the configuration."
         );
     }
 
@@ -350,12 +363,16 @@ function getChannelCreate(client, lang, options) {
                             )
                         }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "ChannelCreate");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "ChannelCreate");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "ChannelCreate");
                         }
                     }
                 });
@@ -424,12 +441,16 @@ function getChannelDelete(client, lang, options) {
                             )
                         }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "ChannelDelete");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "ChannelDelete");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "ChannelDelete");
                         }
                     }
                 });
@@ -504,13 +525,18 @@ function getChannelUpdate(client, lang, options, bot) {
                                         )
                                     }
 
-                                    if (serverConfig.message.idChannelLog) {
-                                        try {
-                                            newChannel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                        } catch (error) {
-                                            console.error(langLO[lang].error[1] + "ChannelUpdate");
+                                    if (channel.guild.id === serverConfig.message.idServer) {
+                                        if (serverConfig.message.idChannelLog) {
+                                            try {
+                                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                            } catch (error) {
+                                                console.error(langLO[lang].error[1] + "ChannelUpdate");
+                                            }
                                         }
+                                    } else {
+                                        console.error(langLO[lang].error[3] + "ChannelUpdate");
                                     }
+
                                 } catch (error) {
                                     console.log("Error changing channel name, not topic: ", error)
                                 }
@@ -551,12 +577,16 @@ function getChannelUpdate(client, lang, options, bot) {
                                         )
                                     }
 
-                                    if (serverConfig.message.idChannelLog) {
-                                        try {
-                                            newChannel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                        } catch (error) {
-                                            console.error(langLO[lang].error[1] + "ChannelUpdate");
+                                    if (channel.guild.id === serverConfig.message.idServer) {
+                                        if (serverConfig.message.idChannelLog) {
+                                            try {
+                                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                            } catch (error) {
+                                                console.error(langLO[lang].error[1] + "ChannelUpdate");
+                                            }
                                         }
+                                    } else {
+                                        console.error(langLO[lang].error[3] + "ChannelUpdate");
                                     }
                                 } catch (error) {
                                     console.log("Error changing topic: ", error)
@@ -654,12 +684,16 @@ function getPinsUpdate(client, lang, options, bot) {
                                     { name: langLO[lang].pinsupdate[3], value: new Date(time).toLocaleString(), inline: true })
                             }
 
-                            if (serverConfig.message.idChannelLog) {
-                                try {
-                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                } catch (error) {
-                                    console.error(langLO[lang].error[1] + "PinsUpdate");
+                            if (channel.guild.id === serverConfig.message.idServer) {
+                                if (serverConfig.message.idChannelLog) {
+                                    try {
+                                        channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                    } catch (error) {
+                                        console.error(langLO[lang].error[1] + "PinsUpdate");
+                                    }
                                 }
+                            } else {
+                                console.error(langLO[lang].error[3] + "PinsUpdate");
                             }
                         }
                     }
@@ -727,12 +761,16 @@ function getEmojiCreate(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                emoji.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "EmojiCreate");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "EmojiCreate");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "EmojiCreate");
                         }
                     }
                 });
@@ -780,12 +818,16 @@ function getEmojiDelete(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                emoji.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "EmojiDelete");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "EmojiDelete");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "EmojiDelete");
                         }
                     }
                 });
@@ -837,12 +879,16 @@ async function getEmojiUpdate(client, lang, bot) {
                                 .setTimestamp()
                                 .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                            if (serverConfig.message.idChannelLog) {
-                                try {
-                                    newEmoji.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                } catch (error) {
-                                    console.error(langLO[lang].error[1] + "EmojiUpdate");
+                            if (channel.guild.id === serverConfig.message.idServer) {
+                                if (serverConfig.message.idChannelLog) {
+                                    try {
+                                        channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                    } catch (error) {
+                                        console.error(langLO[lang].error[1] + "EmojiUpdate");
+                                    }
                                 }
+                            } else {
+                                console.error(langLO[lang].error[3] + "EmojiUpdate");
                             }
                         }
                     }
@@ -891,16 +937,18 @@ function getBanAdd(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                guild.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "BanAdd");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "BanAdd");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "BanAdd");
                         }
-
                     }
-
                 });
             } else {
                 console.error(langLO.en.error[0] + "BanAdd !")
@@ -944,14 +992,17 @@ function getBanRemove(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                guild.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "BanRemove");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "BanRemove");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "BanRemove");
                         }
-
                     }
                 });
             } else {
@@ -1004,12 +1055,16 @@ function getScheduledCreate(client, lang) {
                             embed.setThumbnail(`https://cdn.discordapp.com/guild-events/${guildScheduledEvent.id}/${guildScheduledEvent.image}.png`)
                         }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                guildScheduledEvent.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "SheduledCreate");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "SheduledCreate");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "SheduledCreate");
                         }
                     }
                 });
@@ -1060,14 +1115,17 @@ function getScheduledDelete(client, lang) {
                             embed.setThumbnail(`https://cdn.discordapp.com/guild-events/${guildScheduledEvent.id}/${guildScheduledEvent.image}.png`)
                         }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                guildScheduledEvent.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "SheduledDelete");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "SheduledDelete");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "SheduledDelete");
                         }
-
                     }
                 });
             }
@@ -1157,12 +1215,16 @@ function getScheduledUpdate(client, lang, bot) {
                                 })
                             }
 
-                            if (serverConfig.message.idChannelLog) {
-                                try {
-                                    newGuildScheduledEvent.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                } catch (error) {
-                                    console.error(langLO[lang].error[1] + "SheduledUpdate");
+                            if (channel.guild.id === serverConfig.message.idServer) {
+                                if (serverConfig.message.idChannelLog) {
+                                    try {
+                                        channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                    } catch (error) {
+                                        console.error(langLO[lang].error[1] + "SheduledUpdate");
+                                    }
                                 }
+                            } else {
+                                console.error(langLO[lang].error[3] + "SheduledUpdate");
                             }
                         }
                     }
@@ -1203,13 +1265,16 @@ function getScheduledUserAdd(client, lang) {
                         .setTimestamp()
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            guildScheduledEvent.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "SheduledUserAdd");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "SheduledUserAdd");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "SheduledUserAdd");
                     }
 
                 });
@@ -1248,12 +1313,13 @@ function getScheduledUserRemove(client, lang) {
                         .setTimestamp()
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            guildScheduledEvent.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "SheduledUserRemove");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "SheduledUserRemove");
+                            }
                         }
                     }
                 });
@@ -1344,12 +1410,16 @@ function getGuildUpdate(client, lang) {
                         embed.setDescription(descriptionParts.join(" | "));
                     }
 
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            client.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "GuildUpdate");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "GuildUpdate");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "GuildUpdate");
                     }
 
                 });
@@ -1425,12 +1495,16 @@ function getGuildMemberUpdate(client, lang) {
                             }
                         }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                newMember.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "GuildMemberUpdate");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "GuildMemberUpdate");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "GuildMemberUpdate");
                         }
                     }
                 });
@@ -1464,13 +1538,16 @@ function getGuildUnavailable(client, lang) {
                         .setTimestamp()
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            guildScheduledEvent.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "GuildUnavailable");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "GuildUnavailable");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "GuildUnavailable");
                     }
                 });
             }
@@ -1509,13 +1586,16 @@ function getGuildMemberAdd(client, lang) {
                         .setTimestamp()
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            member.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "GuildMemberAdd");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "GuildMemberAdd");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "GuildMemberAdd");
                     }
                 });
             }
@@ -1555,12 +1635,16 @@ function getGuildMemberRemove(client, lang) {
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
 
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            member.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "GuildMemberRemove");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "GuildMemberRemove");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "GuildMemberRemove");
                     }
                 });
             }
@@ -1614,13 +1698,16 @@ function getInviteCreate(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                invite.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "InviteCreate");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "InviteCreate");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "InviteCreate");
                         }
                     }
                 });
@@ -1667,13 +1754,16 @@ function getInviteDelete(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                invite.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "InviteDelete");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "InviteDelete");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "InviteDelete");
                         }
                     }
                 });
@@ -1723,12 +1813,16 @@ function getMessageUpdate(client, lang, bot) {
                             })
                         }
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                newMessage.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "MessageUpdate");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "MessageUpdate");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "MessageUpdate");
                         }
                     }
                 });
@@ -1787,6 +1881,17 @@ function getMessageDelete(client, lang) {
                             })
                         }
 
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "MessageDelete");
+                                }
+                            }
+                        } else {
+                            console.error(langLO[lang].error[3] + "MessageDelete");
+                        }
                     }
                 });
             }
@@ -1832,14 +1937,17 @@ function getMessageDeleteBulk(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                message.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "MessageDeleteBulk");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "MessageDeleteBulk");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "MessageDeleteBulk");
                         }
-
                     }
                 });
             }
@@ -1878,12 +1986,16 @@ function getMessageReactionUser(client, lang) {
                         .setTimestamp()
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            client.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "MessageReactionUser");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "MessageReactionUser");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "MessageReactionUser");
                     }
                 });
             }
@@ -1922,12 +2034,16 @@ function getMessageReactionUserRemove(client, lang) {
                         .setTimestamp()
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            client.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "MessageReactionUserRemove");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "MessageReactionUserRemove");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "MessageReactionUserRemove");
                     }
                 });
             }
@@ -1965,14 +2081,17 @@ function getMessageReactionUserRemoveAll(client, lang) {
                         .setTimestamp()
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            message.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "MessageReactionUserRemoveAll");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "MessageReactionUserRemoveAll");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "MessageReactionUserRemoveAll");
                     }
-
                 });
             }
             else {
@@ -2007,14 +2126,17 @@ function getMessageReactionUserGroupRemove(client, lang) {
                         .setTimestamp()
                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            client.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "MessageReactionUserGroupRemove");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "MessageReactionUserGroupRemove");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "MessageReactionUserGroupRemove");
                     }
-
                 });
             }
             else {
@@ -2058,14 +2180,18 @@ function getRoleCreate(client, lang) {
                             )
 
                             .setTimestamp()
-                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
+                            .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() })
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                role.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "RoleCreate");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "RoleCreate");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "RoleCreate");
                         }
                     }
                 });
@@ -2109,16 +2235,19 @@ function getRoleDelete(client, lang) {
                                 { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false },
                                 { name: langLO[lang].roledelete[1], value: `${role.name}`, inline: false },
                             )
-
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                role.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "RoleDelete");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "RoleDelete");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "RoleDelete");
                         }
                     }
                 });
@@ -2182,12 +2311,16 @@ function getRoleUpdate(client, lang, bot) {
                                 })
                             }
 
-                            if (serverConfig.message.idChannelLog) {
-                                try {
-                                    newRole.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                } catch (error) {
-                                    console.error(langLO[lang].error[1] + "RoleUpdate");
+                            if (channel.guild.id === serverConfig.message.idServer) {
+                                if (serverConfig.message.idChannelLog) {
+                                    try {
+                                        channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                    } catch (error) {
+                                        console.error(langLO[lang].error[1] + "RoleUpdate");
+                                    }
                                 }
+                            } else {
+                                console.error(langLO[lang].error[3] + "RoleUpdate");
                             }
                         }
                     }
@@ -2237,12 +2370,16 @@ function getStickerCreate(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                sticker.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "StickerCreate");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "StickerCreate");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "StickerCreate");
                         }
                     }
                 });
@@ -2291,12 +2428,16 @@ function getStickerDelete(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                sticker.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "StickerDelete");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "StickerDelete");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "StickerDelete");
                         }
                     }
                 });
@@ -2367,12 +2508,16 @@ function getStickerUpdate(client, lang, bot) {
                                 })
                             }
 
-                            if (serverConfig.message.idChannelLog) {
-                                try {
-                                    newSticker.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                } catch (error) {
-                                    console.error(langLO[lang].error[1] + "StickerUpdate");
+                            if (channel.guild.id === serverConfig.message.idServer) {
+                                if (serverConfig.message.idChannelLog) {
+                                    try {
+                                        channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                    } catch (error) {
+                                        console.error(langLO[lang].error[1] + "StickerUpdate");
+                                    }
                                 }
+                            } else {
+                                console.error(langLO[lang].error[3] + "StickerUpdate");
                             }
                         }
                     }
@@ -2416,16 +2561,19 @@ function getThreadCreate(client, lang) {
                                 { name: langLO[lang].tools[1], value: `<@${user.id}>`, inline: false },
                                 { name: langLO[lang].threadcreate[1], value: thread.name, inline: false },
                             )
-
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                thread.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "ThreadCreate");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "ThreadCreate");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "ThreadCreate");
                         }
                     }
                 });
@@ -2472,12 +2620,16 @@ function getThreadDelete(client, lang) {
                             .setTimestamp()
                             .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                        if (serverConfig.message.idChannelLog) {
-                            try {
-                                thread.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                            } catch (error) {
-                                console.error(langLO[lang].error[1] + "ThreadDelete");
+                        if (channel.guild.id === serverConfig.message.idServer) {
+                            if (serverConfig.message.idChannelLog) {
+                                try {
+                                    channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                } catch (error) {
+                                    console.error(langLO[lang].error[1] + "ThreadDelete");
+                                }
                             }
+                        } else {
+                            console.error(langLO[lang].error[3] + "ThreadDelete");
                         }
                     }
                 });
@@ -2550,12 +2702,16 @@ function getThreadUpdate(client, lang, bot) {
                                 embed.addFields({ name: langLO[lang].threadupdate[6], value: `${duree.days} ${langLO[lang].tools[5]}, ${duree.hours} ${langLO[lang].tools[6]}, ${duree.minutes} ${langLO[lang].tools[7]}, ${duree.seconds}${langLO[lang].tools[8]}` })
                             }
 
-                            if (serverConfig.message.idChannelLog) {
-                                try {
-                                    newThread.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                } catch (error) {
-                                    console.error(langLO[lang].error[1] + "ThreadUpdate");
+                            if (channel.guild.id === serverConfig.message.idServer) {
+                                if (serverConfig.message.idChannelLog) {
+                                    try {
+                                        channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                    } catch (error) {
+                                        console.error(langLO[lang].error[1] + "ThreadUpdate");
+                                    }
                                 }
+                            } else {
+                                console.error(langLO[lang].error[3] + "ThreadUpdate");
                             }
                         }
                     }
@@ -2597,13 +2753,16 @@ function getThreadMembersUpdate(client, lang) {
                                 .setTimestamp()
                                 .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-
-                            if (serverConfig.message.idChannelLog) {
-                                try {
-                                    client.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                } catch (error) {
-                                    console.error(langLO[lang].error[1] + "ThreadMembersUpdate");
+                            if (channel.guild.id === serverConfig.message.idServer) {
+                                if (serverConfig.message.idChannelLog) {
+                                    try {
+                                        channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                    } catch (error) {
+                                        console.error(langLO[lang].error[1] + "ThreadMembersUpdate");
+                                    }
                                 }
+                            } else {
+                                console.error(langLO[lang].error[3] + "ThreadMembersUpdate");
                             }
                         });
                     }
@@ -2620,12 +2779,16 @@ function getThreadMembersUpdate(client, lang) {
                                 .setTimestamp()
                                 .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
-                            if (serverConfig.message.idChannelLog) {
-                                try {
-                                    client.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                                } catch (error) {
-                                    console.error(langLO[lang].error[1] + "ThreadMembersUpdate");
+                            if (channel.guild.id === serverConfig.message.idServer) {
+                                if (serverConfig.message.idChannelLog) {
+                                    try {
+                                        channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                    } catch (error) {
+                                        console.error(langLO[lang].error[1] + "ThreadMembersUpdate");
+                                    }
                                 }
+                            } else {
+                                console.error(langLO[lang].error[3] + "ThreadMembersUpdate");
                             }
                         });
                     }
@@ -2685,12 +2848,16 @@ function getUserUpdate(client, lang) {
                     if (descriptionParts.length > 0) {
                         embed.setDescription(descriptionParts.join(" | "));
                     }
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            client.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "UserUpdate");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "UserUpdate");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "UserUpdate");
                     }
                 });
             }
@@ -2764,12 +2931,16 @@ function getVoiceStateUpdate(client, lang) {
                         embed.addFields({ name: langLO[lang].voicestateupdate[9], value: partage })
                     }
 
-                    if (serverConfig.message.idChannelLog) {
-                        try {
-                            newMember.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
-                        } catch (error) {
-                            console.error(langLO[lang].error[1] + "VoiceStateUpdate");
+                    if (channel.guild.id === serverConfig.message.idServer) {
+                        if (serverConfig.message.idChannelLog) {
+                            try {
+                                channel.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                            } catch (error) {
+                                console.error(langLO[lang].error[1] + "VoiceStateUpdate");
+                            }
                         }
+                    } else {
+                        console.error(langLO[lang].error[3] + "VoiceStateUpdate");
                     }
                 });
             }

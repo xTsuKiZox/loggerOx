@@ -2,8 +2,9 @@ declare module "loggerox" {
   /**
    * Function to initialize configuration for LoggerOx
    * @param {string} idChannelLog The ID of the channel to log events.
+   * @param {string} idServer Your server id
    */
-  export function initLoggerOx(idChannelLog: string): void;
+  export function initLoggerOx(idChannelLog: string, idServer: string): void;
   /**
    * Function to change embed color depending on event type
    * @param {string} type Type of event | Add (green) / Update (orange) / Delete (red)
