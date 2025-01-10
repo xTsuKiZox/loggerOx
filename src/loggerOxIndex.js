@@ -1878,6 +1878,12 @@ function getMessageDelete(client, lang) {
                                     { name: langLO[lang].messagedelete[3], value: `<@${message.author.id}>`, inline: false },
                                 )
                             })
+                        } else if (message.interactionMetadata) {
+                            embed.setDescription(langLO[lang].messagedelete[5])
+                            embed.addFields(
+                                { name: langLO[lang].messagedelete[1], value: `<#${message.channelId}>`, inline: false },
+                                { name: langLO[lang].messagedelete[3], value: `<@${message.author.id}>`, inline: false },
+                            )
                         }
 
                         if (message.guild.id === serverConfig.message.idServer) {
