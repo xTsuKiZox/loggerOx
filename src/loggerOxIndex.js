@@ -2782,7 +2782,7 @@ function getThreadMembersUpdate(client, lang) {
 
                             if (serverConfig.message.idChannelLog) {
                                 try {
-                                    client.guild.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
+                                    client.channels.cache.find(ch => ch.id === serverConfig.message.idChannelLog).send({ embeds: [embed] });
                                 } catch (error) {
                                     console.error(langLO[lang].error[1] + "ThreadMembersUpdate");
                                 }
