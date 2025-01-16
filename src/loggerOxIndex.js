@@ -505,9 +505,9 @@ function getChannelUpdate(client, lang, options, bot) {
                                         .setFooter({ text: `${client.user.username}`, iconURL: client.user.avatarURL() });
 
                                     if (options === true) {
-                                        if (channel.nsfw === false) {
+                                        if (newChannel.nsfw === false) {
                                             forNsfw = langLO[lang].tools[2]
-                                        } else if (channel.nsfw === true) {
+                                        } else if (newChannel.nsfw === true) {
                                             forNsfw = langLO[lang].tools[3]
                                         }
                                         embed.addFields(
