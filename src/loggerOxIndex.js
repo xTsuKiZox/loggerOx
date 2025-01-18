@@ -2844,6 +2844,9 @@ function getUserUpdate(client, lang) {
                     }
                     if (oldUser.avatarDecorationData != newUser.avatarDecorationData) {
                         descriptionParts.push(langLO[lang].userupdate[6]);
+                        if (newUser.avatarDecorationData != null) {
+                            embed.setThumbnail(`https://cdn.discordapp.com/avatar-decoration-presets/${newUser.avatarDecorationData.asset}?size=64`)
+                        }
                     }
                     if (descriptionParts.length > 0) {
                         embed.setDescription(descriptionParts.join(" | "));
